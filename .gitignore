@@ -31,7 +31,6 @@ venv.bak/
 
 # ===== Переменные окружения и секреты =====
 .env
-.env.*
 !.env.example
 *.env
 secrets.json
