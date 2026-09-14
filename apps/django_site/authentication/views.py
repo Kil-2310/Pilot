@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, HttpRequest
+from django.contrib.auth import logout
+from django.urls import reverse_lazy
 
-# Create your views here.
+
+def logout_view(request: HttpRequest) -> HttpResponseRedirect:
+    """View-функция для выхода из аккаунта"""
+    logout(request)
+    return HttpResponseRedirect(reverse_lazy("authentication:login"))
