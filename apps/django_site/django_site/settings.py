@@ -43,6 +43,9 @@ INSTALLED_APPS = [
 
     'authentication.apps.AuthenticationConfig',
     'pilot.apps.PilotConfig',
+    'responsible_person.apps.ResponsiblePersonConfig',
+
+
 ]
 
 MIDDLEWARE = [
