@@ -5,3 +5,5 @@
 <p>Имя в max: {{ pilot.max_name }}</p>
 <p>Номер телефона: {{ pilot.telephone }}</p>
 <p>Биография пилота: {{ pilot.bio }}</p>
+
+<a href="{% url 'pilot:pilot_update' pk=pilot.id %}">Обновить профиль</a>
