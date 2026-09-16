@@ -9,7 +9,7 @@ class ProfilePilotDetailView(LoginRequiredMixin, DetailView):
     """Детали профиля пилота"""
     queryset = (
         ProfilePilot.objects.filter(user__is_active=True)
-        .only('bio', 'vk_name', 'max_name', 'telephone', 'user__username', )
+        .only('description', 'vk_name', 'max_name', 'telephone', 'user__username', )
     )
 
     template_name = 'pilot/pilot-detail.html'

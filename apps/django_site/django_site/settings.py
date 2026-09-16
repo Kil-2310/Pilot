@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'authentication.apps.AuthenticationConfig',
     'pilot.apps.PilotConfig',
     'responsible_person.apps.ResponsiblePersonConfig',
-
+    'accompanied.apps.AccompaniedConfig',
 
 ]
 
@@ -137,5 +137,9 @@ MAILERS = {
 
 
 # Редиректы для аутентификации
-LOGIN_REDIRECT_URL = "/admin/"
+LOGIN_REDIRECT_URL = reverse_lazy('accompanied:accompanied_list')
 LOGIN_URL = reverse_lazy("authentication:login")
+
+# Настройка медиа
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
