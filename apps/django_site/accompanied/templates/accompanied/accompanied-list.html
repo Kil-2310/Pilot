@@ -1,0 +1,15 @@
+<h1>Список сопровождаемых</h1>
+
+{% for accompanied in accompanied_individuals %}
+    {% if accompanied.preview %}
+        <img src="{{ accompanied.preview.url }}"
+             alt="Фото сопровождаемого {{ accompanied.full_name }}">
+    {% endif %}
+    <p>ФИО: {{ accompanied.full_name }}</p>
+    <p>Дата рождения: {{ accompanied.date_birth }}</p>
+    <p>Описание: {{ accompanied.description }}</p>
+    <a href="{% url 'accompanied:accompanied_detail' pk=accompanied.pk %}">Детали сопровождаемого</a>
+    <hr>
+{% endfor %}
+
+<a href="{% url 'accompanied:accompanied_create' %}">Создать нового сопровождаемого</a>

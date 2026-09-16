@@ -1,0 +1,29 @@
+<h1>Детали сопровождаемого</h1>
+
+{% if accompanied.preview %}
+    <img src="{{ accompanied.preview.url }}"
+         alt="Фото сопровождаемого {{ accompanied.full_name }}">
+{% endif %}
+<p>ФИО: {{ accompanied.full_name }}</p>
+<p>Дата рождения: {{ accompanied.date_birth }}</p>
+<p>Описание: {{ accompanied.description }}</p>
+<p>ФИО ответственного лица лицо: {{ accompanied.responsible_person.full_name }}</p>
+
+<h2>Список пилотов</h2>
+{% for pilot in accompanied.pilots.all %}
+    <p>Имя: {{ pilot.user.first_name }}</p>
+    <p>Фамилия: {{ pilot.user.last_name }}</p>
+    <p>Имя в MAX: {{ pilot.max_name }}</p>
+    <p>Имя в VK: {{ pilot.vk_name }}</p>
+    <p>Телефон: {{ pilot.telephone }}</p>
+    <a href="{% url 'pilot:pilot_detail' pk=pilot.pk %}">Профиль пилота</a>
+    <hr>
+{% endfor %}
+
+<a href="{% url 'responsible_person:responsible_person_detail' pk=accompanied.responsible_person.pk%}">Ответственное лицо</a>
+<br>
+<a href="{% url 'accompanied:accompanied_update' pk=accompanied.pk %}">Обновить сопровождаемого</a>
+<br>
+<a href="{% url 'accompanied:accompanied_delete' pk=accompanied.pk %}">Удалить сопровождаемого</a>
+<br>
+<a href="{% url 'accompanied:accompanied_list' %}">Назад к списку сопровождаемых</a>

@@ -1,0 +1,9 @@
+<h1>Создание сопровождаемого</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>Создать</button>
+</form>
+
+<a href="{% url 'accompanied:accompanied_list' %}">Назад к списку сопровождаемых</a>
