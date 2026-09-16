@@ -67,7 +67,6 @@ class AccompaniedUpdateView(LoginRequiredMixin, UpdateView):
 
 class AccompaniedDeleteView(LoginRequiredMixin, DeleteView):
     """Отвязка пилота от сопровождаемого (без удаления сопровождаемого)"""
-
     model = Accompanied
     template_name = 'accompanied/accompanied-delete.html'
     success_url = reverse_lazy('accompanied:accompanied_list')

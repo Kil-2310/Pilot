@@ -16,4 +16,4 @@ class ProfilePilot(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_pilot')
 
     def __str__(self):
-        return f'{self.max_name} pilot'
+        return f'Пилот - {self.user.last_name} {self.user.first_name}'

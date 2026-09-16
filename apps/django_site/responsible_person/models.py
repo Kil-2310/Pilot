@@ -7,8 +7,8 @@ class ResponsiblePerson(models.Model):
     class Status(models.TextChoices):
         PARENT = 'parent', 'родитель'
         GUARDIAN = 'guardian', 'опекун'
+        FRIEND = 'friend', 'друг'
         OTHER = 'other', 'другое'
-
 
     full_name = models.CharField('ФИО', max_length=255)
     status = models.CharField(
@@ -24,7 +24,6 @@ class ResponsiblePerson(models.Model):
 
     created_at = models.DateTimeField('Время создания', auto_now_add=True)
     updated_at = models.DateTimeField('Время последнего изменения', auto_now=True)
-
 
     def __str__(self):
         return f'Ответственное лицо {self.full_name}'

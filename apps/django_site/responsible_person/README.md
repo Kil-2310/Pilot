@@ -6,6 +6,6 @@
 
 ## URL
 
-    | URL | View | Метод | Описание | путь к HTML-шаблону
+    | URL | View | Метод | Описание | Путь к HTML-шаблону
     '/detail/<pk>' | ResponsiblePersonDetailView | GET | Получение данных ответственного лица | responsible_person/responsible-person-detail.html
 

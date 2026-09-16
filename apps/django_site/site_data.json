@@ -1,0 +1,103 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1500000$UvSOi6av6BF3oHYp8tzVAH$CXtAG707uS8ryYP9UaZcJ3KuxDFJ33H+qJNqmEPtEpA=",
+        "last_login": "2026-09-16T11:23:46.829Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-09-16T11:23:32.190Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1500000$br0y2efZ3KGYOG1L2ceNUe$NQEr2bH0XK8WqnZSWPe1Kxi2EgQdQrR1MRu4U3sIy5U=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "bob",
+        "first_name": "Потапов",
+        "last_name": "Петя",
+        "email": "lox22@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-09-16T11:24:06Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "pilot.profilepilot",
+    "pk": 1,
+    "fields": {
+        "telephone": "8 999 999 99 99",
+        "max_name": "Bob",
+        "vk_name": "",
+        "description": "Волонтер, 17 лет. Последние 2 года активно помогает пожилым людям.",
+        "created_at": "2026-09-16T11:25:40.871Z",
+        "updated_at": "2026-09-16T11:25:40.871Z",
+        "user": 2
+    }
+},
+{
+    "model": "responsible_person.responsibleperson",
+    "pk": 1,
+    "fields": {
+        "full_name": "Иванов Александр Сергеевич",
+        "status": "friend",
+        "max_name": "poet",
+        "telephone": "8 999 999 99 99",
+        "description": "",
+        "is_active": true,
+        "created_at": "2026-09-16T11:27:49.209Z",
+        "updated_at": "2026-09-16T11:32:44.913Z"
+    }
+},
+{
+    "model": "accompanied.accompanied",
+    "pk": 1,
+    "fields": {
+        "preview": "accompanies/b02.jpg",
+        "full_name": "Иванова Елена Витальевна",
+        "date_birth": "1960-10-10",
+        "description": "60 летняя женщина, пережила инфоркт и потеряла способность ухаживать за собой, домом и домашними животными.",
+        "health_problems": "1. Нарушение функция мозга\r\n2. Деменция",
+        "tasks": "1. Уборка квартиры\r\n2. Прогулки с сопровождаемым 2 раза в день\r\n3. Закупка лекарств\r\n4. Уход за гигиеной сопровождаемого",
+        "is_active": true,
+        "created_at": "2026-09-16T11:30:56.016Z",
+        "updated_at": "2026-09-16T11:30:56.016Z",
+        "responsible_person": 1,
+        "pilots": [
+            1
+        ]
+    }
+},
+{
+    "model": "accompanied.accompanied",
+    "pk": 2,
+    "fields": {
+        "preview": "",
+        "full_name": "Смирнов Максим Андреевич",
+        "date_birth": "1970-10-12",
+        "description": "Человек сильно пострадал а автомобильной аварии, врачи смогли спасти пациента, путем проведения операции на мозге. К сожалению, последствия операции дали о себе знать и сопровождаемый не может передвигаться без посторонней помощи.",
+        "health_problems": "1. Головные боли\r\n2. Отказ ног",
+        "tasks": "1. Прогулки с сопровождаемым.\r\n2. Уборка квартиры.",
+        "is_active": true,
+        "created_at": "2026-09-16T11:36:49.964Z",
+        "updated_at": "2026-09-16T11:36:49.964Z",
+        "responsible_person": 1,
+        "pilots": [
+            1
+        ]
+    }
+}
+]
