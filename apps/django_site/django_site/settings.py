@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+import logging.config
 
 from django.urls import reverse_lazy
 
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'drf_spectacular',
 
     'authentication.apps.AuthenticationConfig',
     'pilot.apps.PilotConfig',
@@ -136,10 +139,53 @@ MAILERS = {
 }
 
 
-# Редиректы для аутентификации
+# ============== Логирование ==============
+LOGLEVEL = 'INFO'
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(message)s"
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["console"],
+            "level": LOGLEVEL,
+        },
+    },
+})
+
+
+# ============== Редиректы для аутентификации ==============
 LOGIN_REDIRECT_URL = reverse_lazy('accompanied:accompanied_list')
 LOGIN_URL = reverse_lazy("authentication:login")
 
-# Настройка медиа
+
+# ============== Настройка медиа ==============
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+
+
+# ============== Настройка swagger ==============
+SPECTACULAR_SETTINGS = {
+   'TITLE': 'API for MAX bot',
+   'VERSION': '1.0.0',
+   'SERVE_INCLUDE_SCHEMA': False,
+}
+
+
+# ============== Настройка REST FRAMEWORK ==============
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}

@@ -27,8 +27,18 @@ urlpatterns = [
     path('pilot/', include('pilot.urls')),
     path('responsible-person/', include('responsible_person.urls')),
     path('accompanied/', include('accompanied.urls')),
+
+    path('api/responsible-person/', include('responsible_person.api_urls')),
 ]
 
-
 if settings.DEBUG:
+    from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    schemas = [
+        path('api/schema/', SpectacularAPIView.as_view(), name="schema"),
+        path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
+        path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    ]
+    urlpatterns.extend(schemas)

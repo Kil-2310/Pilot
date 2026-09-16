@@ -1,5 +1,7 @@
 from django.db import models
 
+from .databse_manager import ResponsiblePersonManager
+
 
 class ResponsiblePerson(models.Model):
     """Модель ответственного лица"""
@@ -24,6 +26,8 @@ class ResponsiblePerson(models.Model):
 
     created_at = models.DateTimeField('Время создания', auto_now_add=True)
     updated_at = models.DateTimeField('Время последнего изменения', auto_now=True)
+
+    objects = ResponsiblePersonManager()
 
     def __str__(self):
         return f'Ответственное лицо {self.full_name}'
