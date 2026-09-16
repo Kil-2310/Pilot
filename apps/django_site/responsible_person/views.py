@@ -6,10 +6,7 @@ from .models import ResponsiblePerson
 
 class ResponsiblePersonDetailView(LoginRequiredMixin, DetailView):
     """Получение деталей ответственных лиц"""
-    queryset = (
-        ResponsiblePerson.objects.filter(is_active=True)
-        .only('full_name', 'status', 'max_name', 'telephone', 'description', )
-    )
+    queryset = ResponsiblePerson.objects.get_all().get_active()
 
     template_name = 'responsible_person/responsible-person-detail.html'
     context_object_name = 'responsible_person'
