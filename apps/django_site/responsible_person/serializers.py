@@ -6,7 +6,7 @@ class BaseResponsiblePersonSerializer(serializers.ModelSerializer):
     """Базовый сериализатор с общими полями для ответственного лица"""
     class Meta:
         model = ResponsiblePerson
-        fields = ('full_name', 'status', 'max_name', 'telephone', 'description')
+        fields = ('max_user_id', 'full_name', 'status', 'max_name', 'telephone', 'description')
 
 
 class GetResponsiblePersonSerializer(BaseResponsiblePersonSerializer):
@@ -15,8 +15,14 @@ class GetResponsiblePersonSerializer(BaseResponsiblePersonSerializer):
         pass
 
 
-class PostResponsiblePersonSerializer(BaseResponsiblePersonSerializer):
-    """Создание/обновление ответственных лиц"""
+class UpdateResponsiblePersonSerializer(BaseResponsiblePersonSerializer):
+    """Обновление ответственных лиц"""
+    class Meta(BaseResponsiblePersonSerializer.Meta):
+        fields = ('full_name', 'status', 'max_name', 'telephone', 'description')
+
+
+class CreateResponsiblePersonSerializer(BaseResponsiblePersonSerializer):
+    """Создание ответственных лиц"""
     class Meta(BaseResponsiblePersonSerializer.Meta):
         pass
 

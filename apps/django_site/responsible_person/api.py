@@ -4,7 +4,8 @@ from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIVie
 from .models import ResponsiblePerson
 from .serializers import (
     GetResponsiblePersonSerializer,
-    PostResponsiblePersonSerializer,
+    UpdateResponsiblePersonSerializer,
+    CreateResponsiblePersonSerializer,
     UpdateStatusResponsiblePersonSerializer,
 )
 
@@ -17,6 +18,7 @@ class ResponsiblePersonDetailApiView(RetrieveAPIView):
     """Получение деталей профиля"""
     queryset = ResponsiblePerson.objects.get_only().get_active()
     serializer_class = GetResponsiblePersonSerializer
+    lookup_field = 'max_user_id'
 
 
 @extend_schema(
@@ -26,7 +28,7 @@ class ResponsiblePersonDetailApiView(RetrieveAPIView):
 class ResponsiblePersonCreateApiView(CreateAPIView):
     """Создание ответственного лица"""
     model = ResponsiblePerson
-    serializer_class = PostResponsiblePersonSerializer
+    serializer_class = CreateResponsiblePersonSerializer
 
 
 @extend_schema(
@@ -36,16 +38,18 @@ class ResponsiblePersonCreateApiView(CreateAPIView):
 class ResponsiblePersonUpdateApiView(UpdateAPIView):
     """Обновление ответственного лица"""
     queryset = ResponsiblePerson.objects.get_only().get_active()
-    serializer_class = PostResponsiblePersonSerializer
+    serializer_class = UpdateResponsiblePersonSerializer
     http_method_names = ['patch']
+    lookup_field = 'max_user_id'
 
 
-@extend_schema(
-    tags=['responsible_person'],
-    description='Изменение статуса активного аккаунтка на неактивный',
-)
-class ResponsiblePersonUpdateStatusApiView(UpdateAPIView):
-    """Изменение статуса активного аккаунтка на неактивный"""
-    queryset = ResponsiblePerson.objects.get_only().get_active()
-    serializer_class = UpdateStatusResponsiblePersonSerializer
-    http_method_names = ['patch']
+# @extend_schema(
+#     tags=['responsible_person'],
+#     description='Изменение статуса активного аккаунтка на неактивный и наоборот',
+# )
+# class ResponsiblePersonUpdateStatusApiView(UpdateAPIView):
+#     """Изменение статуса активного аккаунтка на неактивный и наоборот"""
+#     queryset = ResponsiblePerson.objects.get_only().get_active()
+#     serializer_class = UpdateStatusResponsiblePersonSerializer
+#     http_method_names = ['patch']
+#     lookup_field = 'max_user_id'
