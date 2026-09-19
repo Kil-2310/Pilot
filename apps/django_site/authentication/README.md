@@ -6,6 +6,6 @@
 
 ## URL
 
-    | URL | View | Метод | Описание | Путь к HTML-шаблону
-    '/login/' | LoginView | POST | Аутентификация | authentication/login.html
-    '/logout/' | logout_view | POST | Выход из аккаунта | -
+    | URL | View | Метод | Описание | Путь к HTML-шаблону |
+    /login/ | LoginView | POST | Аутентификация | authentication/login.html
+    /logout/ | logout_view | POST | Выход из аккаунта | -

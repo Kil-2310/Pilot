@@ -6,6 +6,6 @@
 
 ## URL
 
-    | URL | View | Метод | Описание | Путь к HTML-шаблону
-    '/detail/<pk>' | ProfilePilotDetailView | GET | Получение данных профиля | pilot/pilot-detail.html
-    '/update/<pk>' | ProfilePilotUpdateView | GET/POST | Обновление данных профиля | pilot/pilot-update.html
+    | URL | View | Метод | Описание | Путь к HTML-шаблону |
+    '/detail/<pk>/' | ProfilePilotDetailView | GET | Получение данных профиля | pilot/pilot-detail.html
+    '/update/<pk>/' | ProfilePilotUpdateView | GET/POST | Обновление данных профиля | pilot/pilot-update.html
