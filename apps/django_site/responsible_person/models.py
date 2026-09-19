@@ -20,6 +20,7 @@ class ResponsiblePerson(models.Model):
         default=Status.OTHER,
     )
     max_name = models.CharField('Имя в MAX', max_length=50, unique=True)
+    max_user_id = models.IntegerField('ID в MAX')
     telephone = models.CharField('Номер телефона', max_length=15, unique=True)
     description = models.TextField('Описание',  max_length=500, blank=True)
     is_active = models.BooleanField('Активен', default=True)

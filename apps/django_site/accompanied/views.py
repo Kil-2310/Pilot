@@ -65,7 +65,7 @@ class AccompaniedUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('accompanied:accompanied_detail', kwargs={'pk': self.object.pk})
 
 
-class AccompaniedDeleteView(LoginRequiredMixin, DeleteView):
+class AccompaniedRemovePilotView(LoginRequiredMixin, DeleteView):
     """Отвязка пилота от сопровождаемого (без удаления сопровождаемого)"""
     model = Accompanied
     template_name = 'accompanied/accompanied-delete.html'

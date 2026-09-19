@@ -4,13 +4,13 @@ from .api import (
     ResponsiblePersonCreateApiView,
     ResponsiblePersonDetailApiView,
     ResponsiblePersonUpdateApiView,
-    ResponsiblePersonUpdateStatusApiView,
+    # ResponsiblePersonUpdateStatusApiView,
 )
 
 
 urlpatterns = [
     path('create/', ResponsiblePersonCreateApiView.as_view()),
-    path('detail/<int:pk>/', ResponsiblePersonDetailApiView.as_view()),
-    path('update/<int:pk>/', ResponsiblePersonUpdateApiView.as_view()),
-    path('update-status/<int:pk>/', ResponsiblePersonUpdateStatusApiView.as_view()),
+    path('detail/<int:max_user_id>/', ResponsiblePersonDetailApiView.as_view()),
+    path('update/<int:max_user_id>/', ResponsiblePersonUpdateApiView.as_view()),
+    # path('update-status/<int:max_user_id>/', ResponsiblePersonUpdateStatusApiView.as_view()),
 ]
