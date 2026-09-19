@@ -2,13 +2,12 @@ from django.db import models
 
 
 class ResponsiblePersonQuerySet(models.QuerySet):
-    def get_all(self):
-        """Получение всех ответственных лиц"""
+    def get_only(self):
+        """Получение определенных полей"""
         return self.only('full_name', 'status', 'max_name', 'telephone', 'description', )
 
-
     def get_active(self):
-        """Получение активных ответственных лиц"""
+        """Получение активных пользователей"""
         return self.filter(is_active=True)
 
 

@@ -15,7 +15,7 @@ from .serializers import (
 )
 class ResponsiblePersonDetailApiView(RetrieveAPIView):
     """Получение деталей профиля"""
-    queryset = ResponsiblePerson.objects.get_all().get_active()
+    queryset = ResponsiblePerson.objects.get_only().get_active()
     serializer_class = GetResponsiblePersonSerializer
 
 
@@ -35,7 +35,7 @@ class ResponsiblePersonCreateApiView(CreateAPIView):
 )
 class ResponsiblePersonUpdateApiView(UpdateAPIView):
     """Обновление ответственного лица"""
-    queryset = ResponsiblePerson.objects.get_all().get_active()
+    queryset = ResponsiblePerson.objects.get_only().get_active()
     serializer_class = PostResponsiblePersonSerializer
     http_method_names = ['patch']
 
@@ -46,6 +46,6 @@ class ResponsiblePersonUpdateApiView(UpdateAPIView):
 )
 class ResponsiblePersonUpdateStatusApiView(UpdateAPIView):
     """Изменение статуса активного аккаунтка на неактивный"""
-    queryset = ResponsiblePerson.objects.get_all().get_active()
+    queryset = ResponsiblePerson.objects.get_only().get_active()
     serializer_class = UpdateStatusResponsiblePersonSerializer
     http_method_names = ['patch']
