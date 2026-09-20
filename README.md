@@ -51,13 +51,12 @@
 
 ### Установка ПО и настройка переменного окружения
 
-1. Установить Docker по ссылке: https://docs.docker.com/engine/install/.
+1. 1. Установить Docker по ссылке: https://docs.docker.com/engine/install/ и Docker Compose. Docker Compose обычно идет в связке с Docker.
 2. Установить плагин для логирования: 
     ```bash
     docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
     ```
 3. Создайте в кроне проекта файл .env и заполните его по примеру ниже. При DJANGO_DEBUG=0 проект запускается в продакшен режиме и Swagger и Redoc недоступны к просмотру.
-
 
     DJANGO_SECRET_KEY='django-insecure-fh_wan5bo5hvr=(7*y1jar%%a580e&mb_8n7i0lkskc^kl5hrp'
     DJANGO_DEBUG=0
