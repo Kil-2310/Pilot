@@ -1,8 +1,8 @@
 # App: accompanied
 
 ## Назначение
-Приложение предназнечено для получения списка, деталей, создание, обновлениея, удаления сопровождаемых.
-Модели БД описаны в файде ./models.py
+Приложение по работе с сопровождаемыми.
+Модели БД описаны в файде ./models.py.
 
 ## URL
 
@@ -12,3 +12,8 @@
     /create/<pk>/ | AccompaniedCreateView | POST | Создание нового сопровождаемого | accompanied/accompanied-create.html
     /update/<pk>/ | AccompaniedUpdateView | GET/POST | Обновление сопровождаемого | accompanied/accompanied-update.html
     /remove-pilot/<pk>/ | AccompaniedRemovePilotView | POST | Отвязка пилота от сопровождаемого (без удаления сопровождаемого) | accompanied/accompanied-delete.html
+
+## Url для API
+    
+    | URL | ApiView | Метод | Описание |
+    persons-detail/<max_user_id>/ | AccompaniedListAPIView | GET | Получение всех сопровождаемых, привязанных к ответственному лицу

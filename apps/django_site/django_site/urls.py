@@ -30,6 +30,7 @@ urlpatterns = [
 
     path('api/responsible-person/', include('responsible_person.api_urls')),
     path('api/pilot/', include('pilot.api_urls')),
+    path('api/accompanied/', include('accompanied.api_urls')),
 ]
 
 if settings.DEBUG:
