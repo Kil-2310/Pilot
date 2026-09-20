@@ -58,20 +58,20 @@
     ```
 3. Создайте в кроне проекта файл .env и заполните его по примеру ниже. При DJANGO_DEBUG=0 проект запускается в продакшен режиме и Swagger и Redoc недоступны к просмотру.
 
-    DJANGO_SECRET_KEY='django-insecure-fh_wan5bo5hvr=(7*y1jar%%a580e&mb_8n7i0lkskc^kl5hrp'
-    DJANGO_DEBUG=0
-    DJANGO_LOGLEVEL=INFO
-    DJANGO_ALLOWED_HOSTS=
-    DJANGO_DOMAIN=
-
-    POSTGRES_USER=admin
-    POSTGRES_PASSWORD=123
-    POSTGRES_DB=pilot
-    POSTGRES_PORT=5432
-
-    AWS_ACCESS_KEY_ID=
-    AWS_SECRET_ACCESS_KEY=
-    AWS_STORAGE_BUCKET_NAME=
+        DJANGO_SECRET_KEY='django-insecure-fh_wan5bo5hvr=(7*y1jar%%a580e&mb_8n7i0lkskc^kl5hrp'
+        DJANGO_DEBUG=0
+        DJANGO_LOGLEVEL=INFO
+        DJANGO_ALLOWED_HOSTS=
+        DJANGO_DOMAIN=
+   
+        POSTGRES_USER=admin
+        POSTGRES_PASSWORD=123
+        POSTGRES_DB=pilot
+        POSTGRES_PORT=5432
+   
+        AWS_ACCESS_KEY_ID=
+        AWS_SECRET_ACCESS_KEY=
+        AWS_STORAGE_BUCKET_NAME=
 
 ### Запуск и остановка проекта
 
