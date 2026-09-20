@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 from pathlib import Path
 import logging.config
+from os import getenv
 
 from django.urls import reverse_lazy
 
@@ -24,12 +25,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-fh_wan5bo5hvr=(7*y1jar%%a580e&mb_8n7i0lkskc^kl5hrp'
+SECRET_KEY = getenv('SECRET_KEY', 'django-insecure-fh_wan5bo5hvr=(7*y1jar%%a580e&mb_8n7i0lkskc^kl5hrp')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv("DJANGO_DEBUG", "1") == "1"
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "0.0.0.0",
+    "localhost",
+] + getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
+
+
+if not DEBUG:
+    """Настройка для аутентификации, применяющаяся при развертывании на сервере"""
+    # CSRF_TRUSTED_ORIGINS = getenv("DJANGO_DOMAIN", "").split(",")
 
 
 # Application definition
@@ -84,13 +95,33 @@ WSGI_APPLICATION = 'django_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+if DEBUG:
+    print('--- Database is SqLite ---')
 
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    print('--- Database is PostgreSQL ---')
+
+    POSTGRES_USER = getenv("POSTGRES_USER")
+    POSTGRES_PASSWORD = getenv("POSTGRES_PASSWORD")
+    POSTGRES_NAME = getenv("POSTGRES_NAME")
+    POSTGRES_PORT = getenv("POSTGRES_PORT")
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': POSTGRES_NAME,
+            'USER': POSTGRES_USER,
+            'PASSWORD': POSTGRES_PASSWORD,
+            'HOST': "postgres",
+            'PORT': POSTGRES_PORT,
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
@@ -122,13 +153,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
-
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
@@ -140,7 +164,7 @@ MAILERS = {
 
 
 # ============== Логирование ==============
-LOGLEVEL = 'INFO'
+LOGLEVEL = getenv("DJANGO_LOGLEVEL", "INFO")
 
 logging.config.dictConfig({
     'version': 1,
@@ -173,6 +197,10 @@ LOGIN_URL = reverse_lazy("authentication:login")
 # ============== Настройка медиа ==============
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+
+# ============== Статика ==============
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 # ============== Настройка swagger ==============

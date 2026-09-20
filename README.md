@@ -23,10 +23,8 @@
 ## Технологии и архитектура проекта
 
 Проект состоит из 2-ух интерфейсов:
-
 1. Веб-приложение предназначено для пилота: он регистрирует сопровождаемого, а также ведёт учёт своей работы.
 Стек: Python, Django, HTML5, CSS3, JavaScript.
-
 2. MAX-бот ориентирован на ответственное лицо: через него можно зарегистрироваться в приложении, управлять своим аккаунтом, получать отчёты от пилота, а также просматривать доступных пилотов с фильтрацией по месту жительства.
 Стек: Python, Django Rest Framework, Redis, Celery.
 
@@ -48,3 +46,41 @@
 ## Документация кода
 
 Вся документация по запуску и тестированию веб-интерфейса и API для MAX-бота, включая Swagger, Redoc, URL, методы, ViewAPI, View-классы и описание хранятся в папке apps/django_site.
+
+## Инструкция по запуску и управлению проекта через Docker Compose
+
+### Установка ПО и настройка переменного окружения
+
+1. Установить Docker по ссылке: https://docs.docker.com/engine/install/.
+2. Установить плагин для логирования: 
+    ```bash
+    docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+    ```
+3. Создайте в кроне проекта файл .env и заполните его по примеру ниже. При DJANGO_DEBUG=0 проект запускается в продакшен режиме и Swagger и Redoc недоступны к просмотру.
+
+
+    DJANGO_SECRET_KEY='django-insecure-fh_wan5bo5hvr=(7*y1jar%%a580e&mb_8n7i0lkskc^kl5hrp'
+    DJANGO_DEBUG=0
+    DJANGO_LOGLEVEL=INFO
+    DJANGO_ALLOWED_HOSTS=
+    DJANGO_DOMAIN=
+
+    POSTGRES_USER=admin
+    POSTGRES_PASSWORD=123
+    POSTGRES_DB=pilot
+    POSTGRES_PORT=5432
+
+    AWS_ACCESS_KEY_ID=
+    AWS_SECRET_ACCESS_KEY=
+    AWS_STORAGE_BUCKET_NAME=
+
+### Запуск и остановка проекта
+
+``` bash
+docker compose up -d --build 
+docker compose down
+```
+
+## В курсе дела
+
+Проект находтся на стадии активной разработки.
