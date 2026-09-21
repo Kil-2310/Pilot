@@ -25,9 +25,3 @@ class CreateResponsiblePersonSerializer(BaseResponsiblePersonSerializer):
     """Создание ответственных лиц"""
     class Meta(BaseResponsiblePersonSerializer.Meta):
         pass
-
-
-class UpdateStatusResponsiblePersonSerializer(BaseResponsiblePersonSerializer):
-    """Изменение статуса активного аккаунта на неактивный"""
-    class Meta(BaseResponsiblePersonSerializer.Meta):
-        fields = ('is_active', )

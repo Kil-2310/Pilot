@@ -6,6 +6,10 @@ from .databse_manager import ResponsiblePersonManager
 class ResponsiblePerson(models.Model):
     """Модель ответственного лица"""
 
+    class Meta:
+        verbose_name='Профиль ответственного лица',
+        verbose_name_plural='Профили ответственных лиц',
+
     class Status(models.TextChoices):
         PARENT = 'parent', 'родитель'
         GUARDIAN = 'guardian', 'опекун'

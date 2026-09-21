@@ -1,35 +1,42 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import DetailView, ListView, UpdateView, CreateView
 from django.urls import reverse_lazy, reverse
-from django.http import HttpResponseRedirect
 
 from .models import Accompanied
 
 
 class AccompaniedListView(LoginRequiredMixin, ListView):
-    """Получение списка всех сопровождаемых"""
-    queryset = (
-        Accompanied.objects.filter(is_active=True)
-        .only('preview', 'full_name', 'date_birth', 'description', )
-    )
-
+    """Получение списка всех сопровождаемых, привязанных к данному пользователю"""
     template_name = 'accompanied/accompanied-list.html'
     context_object_name = 'accompanied_individuals'
 
+    def get_queryset(self):
+        user = self.request.user
+        return (
+            Accompanied.objects
+            .get_active()
+            .get_by_pilot(user.profile_pilot)
+            .only('preview', 'full_name', 'date_birth', 'description')
+        )
+
 
 class AccompaniedDetailView(LoginRequiredMixin, DetailView):
-    """Получение деталей сопровождаемого"""
-    queryset = (
-        Accompanied.objects.filter(is_active=True)
-        .only(
-            'preview', 'full_name', 'date_birth', 'description', 'health_problems',
-            'tasks', 'responsible_person__full_name'
-        )
-        .prefetch_related('pilots')
-    )
-
+    """Получение деталей сопровождаемого, привязанного к данному пользователю"""
     template_name = 'accompanied/accompanied-detail.html'
     context_object_name = 'accompanied'
+
+    def get_queryset(self):
+        user = self.request.user
+        return (
+            Accompanied.objects
+            .get_active()
+            .get_by_pilot(user.profile_pilot)
+            .only(
+                'preview', 'full_name', 'date_birth', 'description', 'health_problems',
+                'tasks', 'responsible_person__full_name'
+            )
+            .prefetch_related('pilots')
+    )
 
 
 class AccompaniedCreateView(LoginRequiredMixin, CreateView):
@@ -56,22 +63,10 @@ class AccompaniedUpdateView(LoginRequiredMixin, UpdateView):
     model = Accompanied
     fields = (
         'preview', 'full_name', 'date_birth', 'description',
-        'health_problems', 'tasks', 'pilots', 'responsible_person',
+        'health_problems', 'tasks', 'responsible_person',
     )
 
     template_name = 'accompanied/accompanied-update.html'
 
     def get_success_url(self):
         return reverse('accompanied:accompanied_detail', kwargs={'pk': self.object.pk})
-
-
-class AccompaniedRemovePilotView(LoginRequiredMixin, DeleteView):
-    """Отвязка пилота от сопровождаемого (без удаления сопровождаемого)"""
-    model = Accompanied
-    template_name = 'accompanied/accompanied-delete.html'
-    success_url = reverse_lazy('accompanied:accompanied_list')
-
-    def form_valid(self, form):
-        pilot = self.request.user.profile_pilot
-        self.object.pilots.remove(pilot)
-        return HttpResponseRedirect(self.get_success_url())
