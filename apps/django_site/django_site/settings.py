@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'pilot.apps.PilotConfig',
     'responsible_person.apps.ResponsiblePersonConfig',
     'accompanied.apps.AccompaniedConfig',
-
+    'report.apps.ReportConfig',
 ]
 
 MIDDLEWARE = [
