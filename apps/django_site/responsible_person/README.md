@@ -15,4 +15,3 @@
     /detail/<pk>/ | ResponsiblePersonDetailApiView | GET | Получение деталей ответственного лица
     /create/ | ResponsiblePersonCreateApiView | POST | Создание нового ответственного лица
     /update/<pk>/ | ResponsiblePersonUpdateApiView | PATCH | Частичное обновление ответственного лица
-[//]: # (    /update-status/<pk>/ | ResponsiblePersonUpdateStatusApiView | PATCH | Изменение статуса активного аккаунтка на неактивный и наоборот)

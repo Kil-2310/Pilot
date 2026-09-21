@@ -11,7 +11,6 @@
     /detail/<pk>/ | AccompaniedDetailView | GET | Получение деталей сопровождаемого | accompanied/accompanied-detail.html
     /create/<pk>/ | AccompaniedCreateView | POST | Создание нового сопровождаемого | accompanied/accompanied-create.html
     /update/<pk>/ | AccompaniedUpdateView | GET/POST | Обновление сопровождаемого | accompanied/accompanied-update.html
-    /remove-pilot/<pk>/ | AccompaniedRemovePilotView | POST | Отвязка пилота от сопровождаемого (без удаления сопровождаемого) | accompanied/accompanied-delete.html
 
 ## Url для API
     

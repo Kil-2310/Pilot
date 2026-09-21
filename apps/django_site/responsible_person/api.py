@@ -6,7 +6,6 @@ from .serializers import (
     GetResponsiblePersonSerializer,
     UpdateResponsiblePersonSerializer,
     CreateResponsiblePersonSerializer,
-    UpdateStatusResponsiblePersonSerializer,
 )
 
 
@@ -41,15 +40,3 @@ class ResponsiblePersonUpdateApiView(UpdateAPIView):
     serializer_class = UpdateResponsiblePersonSerializer
     http_method_names = ['patch']
     lookup_field = 'max_user_id'
-
-
-# @extend_schema(
-#     tags=['responsible_person'],
-#     description='Изменение статуса активного аккаунтка на неактивный и наоборот',
-# )
-# class ResponsiblePersonUpdateStatusApiView(UpdateAPIView):
-#     """Изменение статуса активного аккаунтка на неактивный и наоборот"""
-#     queryset = ResponsiblePerson.objects.get_only().get_active()
-#     serializer_class = UpdateStatusResponsiblePersonSerializer
-#     http_method_names = ['patch']
-#     lookup_field = 'max_user_id'

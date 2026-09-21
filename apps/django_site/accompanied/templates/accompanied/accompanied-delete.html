@@ -1,9 +1,0 @@
-<h1>Удаление сопровождаемого</h1>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button>Удалить</button>
-</form>
-
-<a href="{% url 'accompanied:accompanied_list' %}">Назад к списку сопровождаемых</a>
