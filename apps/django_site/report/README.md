@@ -14,4 +14,4 @@
 ## Url для API
     
     | URL | ApiView | Метод | Описание |
-    /accompanied-detail/<int:accompanied_id>/<str:date>/ | ReportDetailByDateView | GET | Получение отчета по дате и id сопровождаемого
+    /accompanied-detail/<accompanied_id>/<date>/ | ReportDetailByDateView | GET | Получение отчета по дате и id сопровождаемого
