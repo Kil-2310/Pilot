@@ -1,0 +1,32 @@
+<h1>Создание новой заметки</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <h2>Видео</h2>
+    <p>
+        <label for="video_1">Видео 1</label>
+        <input type="file" name="videos" id="video_1" accept="video/mp4,video/quicktime,video/x-msvideo,video/webm">
+    </p>
+    <p>
+        <label for="video_2">Видео 2</label>
+        <input type="file" name="videos" id="video_2" accept="video/mp4,video/quicktime,video/x-msvideo,video/webm">
+    </p>
+
+    <h2>Фото</h2>
+    <p>
+        <label for="photo_1">Фото 1</label>
+        <input type="file" name="photos" id="photo_1" accept="image/jpeg,image/png,image/webp">
+    </p>
+    <p>
+        <label for="photo_2">Фото 2</label>
+        <input type="file" name="photos" id="photo_2" accept="image/jpeg,image/png,image/webp">
+    </p>
+    <p>
+        <label for="photo_3">Фото 3</label>
+        <input type="file" name="photos" id="photo_3" accept="image/jpeg,image/png,image/webp">
+    </p>
+
+    <button type="submit">Создать заметку</button>
+</form>

@@ -1,6 +1,8 @@
 from django.db import models
 
 from .databse_manager import AccompaniedManager
+from pilot.models import ProfilePilot
+from responsible_person.models import ResponsiblePerson
 
 
 class Accompanied(models.Model):
@@ -27,13 +29,13 @@ class Accompanied(models.Model):
     updated_at = models.DateTimeField('Время последнего изменения', auto_now=True)
 
     pilots = models.ManyToManyField(
-        'pilot.ProfilePilot',
+        ProfilePilot,
         verbose_name='Пилоты',
         related_name='accompanied',
         blank=True,
     )
     responsible_person = models.ForeignKey(
-        'responsible_person.ResponsiblePerson',
+        ResponsiblePerson,
         verbose_name='Ответственное лицо',
         on_delete=models.SET_NULL,
         null=True,

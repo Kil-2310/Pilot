@@ -12,7 +12,7 @@ class BaseProfilePilotSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfilePilot
         fields = (
-            'telephone','vk_name', 'max_name', 'description',
+            'id', 'telephone','vk_name', 'max_name', 'description',
             'first_name', 'last_name', 'email',
         )
 
@@ -27,7 +27,7 @@ class BaseSettlementSerializer(serializers.ModelSerializer):
     """Базовый класс для населенных пунктов"""
     class Meta:
         model = Settlement
-        fields = ('name', )
+        fields = ('id', 'name', )
 
 
 class GetSettlementSerializer(BaseSettlementSerializer):

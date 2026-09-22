@@ -41,7 +41,6 @@ class AccompaniedDetailView(LoginRequiredMixin, DetailView):
 
 class AccompaniedCreateView(LoginRequiredMixin, CreateView):
     """Создание нового сопровождаемого"""
-
     model = Accompanied
     fields = (
         'preview', 'full_name', 'date_birth', 'description',

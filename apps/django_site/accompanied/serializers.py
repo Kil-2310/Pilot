@@ -12,7 +12,7 @@ class PilotSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfilePilot
         fields = (
-            'first_name', 'last_name', 'telephone',
+            'id', 'first_name', 'last_name', 'telephone',
             'max_name', 'vk_name', 'description',
         )
 
@@ -26,7 +26,7 @@ class BaseAccompaniedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Accompanied
         fields = (
-            'preview', 'full_name', 'date_birth', 'description', 'health_problems',
+            'id', 'preview', 'full_name', 'date_birth', 'description', 'health_problems',
             'tasks', 'responsible_person_full_name', 'pilots',
         )
 

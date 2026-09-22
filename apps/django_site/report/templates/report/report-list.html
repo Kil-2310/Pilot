@@ -1,0 +1,6 @@
+<h1>Список отчетов</h1>
+
+{% for report in reports %}
+    <p>{{ report.date }}</p>
+    <a href="{% url 'report:report_detail' pk=report.pk %}">Детали</a>
+{% endfor %}
