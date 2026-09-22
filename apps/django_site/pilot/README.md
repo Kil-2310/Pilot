@@ -13,5 +13,6 @@
 ## URL для API
 
     | URL | ApiView | Метод | Описание |
-    / | ProfilePilotListAPIView | GET | Получение всех пилотов с фильтрацией по месту работы
+    / | ProfilePilotListAPIView | GET | Получение всех пилотов с фильтрацией по населенному пункту
     /detail/<pk>/ | ProfilePilotRetrieveAPIView | GET | Получение деталей конкретного пилота
+    /settlement/ | SettlementListAPIView | GET | Получение всех доступных населенных пунктов, в которых работают пилоты
