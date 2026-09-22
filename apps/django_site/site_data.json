@@ -219,7 +219,7 @@
     "model": "auth.permission",
     "pk": 25,
     "fields": {
-        "name": "Can add profile pilot",
+        "name": "Can add ('Профиль пилота',)",
         "content_type": 7,
         "codename": "add_profilepilot"
     }
@@ -228,7 +228,7 @@
     "model": "auth.permission",
     "pk": 26,
     "fields": {
-        "name": "Can change profile pilot",
+        "name": "Can change ('Профиль пилота',)",
         "content_type": 7,
         "codename": "change_profilepilot"
     }
@@ -237,7 +237,7 @@
     "model": "auth.permission",
     "pk": 27,
     "fields": {
-        "name": "Can delete profile pilot",
+        "name": "Can delete ('Профиль пилота',)",
         "content_type": 7,
         "codename": "delete_profilepilot"
     }
@@ -246,7 +246,7 @@
     "model": "auth.permission",
     "pk": 28,
     "fields": {
-        "name": "Can view profile pilot",
+        "name": "Can view ('Профиль пилота',)",
         "content_type": 7,
         "codename": "view_profilepilot"
     }
@@ -255,72 +255,252 @@
     "model": "auth.permission",
     "pk": 29,
     "fields": {
-        "name": "Can add responsible person",
+        "name": "Can add ('Населенный пункт',)",
         "content_type": 8,
-        "codename": "add_responsibleperson"
+        "codename": "add_settlement"
     }
 },
 {
     "model": "auth.permission",
     "pk": 30,
     "fields": {
-        "name": "Can change responsible person",
+        "name": "Can change ('Населенный пункт',)",
         "content_type": 8,
-        "codename": "change_responsibleperson"
+        "codename": "change_settlement"
     }
 },
 {
     "model": "auth.permission",
     "pk": 31,
     "fields": {
-        "name": "Can delete responsible person",
+        "name": "Can delete ('Населенный пункт',)",
         "content_type": 8,
-        "codename": "delete_responsibleperson"
+        "codename": "delete_settlement"
     }
 },
 {
     "model": "auth.permission",
     "pk": 32,
     "fields": {
-        "name": "Can view responsible person",
+        "name": "Can view ('Населенный пункт',)",
         "content_type": 8,
-        "codename": "view_responsibleperson"
+        "codename": "view_settlement"
     }
 },
 {
     "model": "auth.permission",
     "pk": 33,
     "fields": {
-        "name": "Can add accompanied",
+        "name": "Can add ('Профиль ответственного лица',)",
         "content_type": 9,
-        "codename": "add_accompanied"
+        "codename": "add_responsibleperson"
     }
 },
 {
     "model": "auth.permission",
     "pk": 34,
     "fields": {
-        "name": "Can change accompanied",
+        "name": "Can change ('Профиль ответственного лица',)",
         "content_type": 9,
-        "codename": "change_accompanied"
+        "codename": "change_responsibleperson"
     }
 },
 {
     "model": "auth.permission",
     "pk": 35,
     "fields": {
-        "name": "Can delete accompanied",
+        "name": "Can delete ('Профиль ответственного лица',)",
         "content_type": 9,
-        "codename": "delete_accompanied"
+        "codename": "delete_responsibleperson"
     }
 },
 {
     "model": "auth.permission",
     "pk": 36,
     "fields": {
-        "name": "Can view accompanied",
+        "name": "Can view ('Профиль ответственного лица',)",
         "content_type": 9,
+        "codename": "view_responsibleperson"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Can add ('Профиль сопровождаемого',)",
+        "content_type": 10,
+        "codename": "add_accompanied"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Can change ('Профиль сопровождаемого',)",
+        "content_type": 10,
+        "codename": "change_accompanied"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+        "name": "Can delete ('Профиль сопровождаемого',)",
+        "content_type": 10,
+        "codename": "delete_accompanied"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+        "name": "Can view ('Профиль сопровождаемого',)",
+        "content_type": 10,
         "codename": "view_accompanied"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can add Отчет",
+        "content_type": 11,
+        "codename": "add_report"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can change Отчет",
+        "content_type": 11,
+        "codename": "change_report"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can delete Отчет",
+        "content_type": 11,
+        "codename": "delete_report"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can view Отчет",
+        "content_type": 11,
+        "codename": "view_report"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can add Запись отчета",
+        "content_type": 12,
+        "codename": "add_reportnote"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can change Запись отчета",
+        "content_type": 12,
+        "codename": "change_reportnote"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can delete Запись отчета",
+        "content_type": 12,
+        "codename": "delete_reportnote"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+        "name": "Can view Запись отчета",
+        "content_type": 12,
+        "codename": "view_reportnote"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+        "name": "Can add Видео запись",
+        "content_type": 14,
+        "codename": "add_reportnotevideo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+        "name": "Can change Видео запись",
+        "content_type": 14,
+        "codename": "change_reportnotevideo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+        "name": "Can delete Видео запись",
+        "content_type": 14,
+        "codename": "delete_reportnotevideo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+        "name": "Can view Видео запись",
+        "content_type": 14,
+        "codename": "view_reportnotevideo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+        "name": "Can add Фото записи",
+        "content_type": 13,
+        "codename": "add_reportnotephoto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+        "name": "Can change Фото записи",
+        "content_type": 13,
+        "codename": "change_reportnotephoto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+        "name": "Can delete Фото записи",
+        "content_type": 13,
+        "codename": "delete_reportnotephoto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+        "name": "Can view Фото записи",
+        "content_type": 13,
+        "codename": "view_reportnotephoto"
     }
 },
 {
@@ -329,12 +509,12 @@
     "fields": {
         "name": "Pilots",
         "permissions": [
-            33,
-            34,
-            36,
+            37,
+            38,
+            40,
             26,
             28,
-            32
+            36
         ]
     }
 },
@@ -344,15 +524,15 @@
     "fields": {
         "name": "Managers",
         "permissions": [
-            33,
-            34,
-            35,
-            36,
+            37,
+            38,
+            39,
+            40,
             25,
             26,
             27,
             28,
-            32
+            36
         ]
     }
 },
@@ -361,7 +541,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$1500000$UvSOi6av6BF3oHYp8tzVAH$CXtAG707uS8ryYP9UaZcJ3KuxDFJ33H+qJNqmEPtEpA=",
-        "last_login": "2026-09-19T13:03:08.489Z",
+        "last_login": "2026-09-22T17:02:14.979Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -379,7 +559,7 @@
     "pk": 2,
     "fields": {
         "password": "pbkdf2_sha256$1500000$br0y2efZ3KGYOG1L2ceNUe$NQEr2bH0XK8WqnZSWPe1Kxi2EgQdQrR1MRu4U3sIy5U=",
-        "last_login": null,
+        "last_login": "2026-09-22T16:54:07.782Z",
         "is_superuser": false,
         "username": "bob",
         "first_name": "Потапов",
@@ -474,16 +654,91 @@
     "model": "contenttypes.contenttype",
     "pk": 8,
     "fields": {
-        "app_label": "responsible_person",
-        "model": "responsibleperson"
+        "app_label": "pilot",
+        "model": "settlement"
     }
 },
 {
     "model": "contenttypes.contenttype",
     "pk": 9,
     "fields": {
+        "app_label": "responsible_person",
+        "model": "responsibleperson"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
         "app_label": "accompanied",
         "model": "accompanied"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "report",
+        "model": "report"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+        "app_label": "report",
+        "model": "reportnote"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+        "app_label": "report",
+        "model": "reportnotephoto"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+        "app_label": "report",
+        "model": "reportnotevideo"
+    }
+},
+{
+    "model": "pilot.settlement",
+    "pk": 1,
+    "fields": {
+        "name": "воскресенск"
+    }
+},
+{
+    "model": "pilot.settlement",
+    "pk": 2,
+    "fields": {
+        "name": "коломна"
+    }
+},
+{
+    "model": "pilot.settlement",
+    "pk": 3,
+    "fields": {
+        "name": "цемгигант"
+    }
+},
+{
+    "model": "pilot.settlement",
+    "pk": 4,
+    "fields": {
+        "name": "шиферная"
+    }
+},
+{
+    "model": "pilot.settlement",
+    "pk": 5,
+    "fields": {
+        "name": "патрики"
     }
 },
 {
@@ -495,8 +750,13 @@
         "vk_name": "",
         "description": "Волонтер, 17 лет. Последние 2 года активно помогает пожилым людям.",
         "created_at": "2026-09-16T11:25:40.871Z",
-        "updated_at": "2026-09-19T13:05:03.925Z",
-        "user": 2
+        "updated_at": "2026-09-22T16:53:34.608Z",
+        "user": 2,
+        "settlements": [
+            1,
+            3,
+            4
+        ]
     }
 },
 {
@@ -506,12 +766,12 @@
         "full_name": "Иванов Александр Сергеевич",
         "status": "friend",
         "max_name": "poet",
+        "max_user_id": 1,
         "telephone": "8 999 999 99 99",
         "description": "",
         "is_active": true,
         "created_at": "2026-09-16T11:27:49.209Z",
-        "updated_at": "2026-09-16T11:32:44.913Z",
-        "max_user_id": 1
+        "updated_at": "2026-09-16T11:32:44.913Z"
     }
 },
 {
@@ -550,6 +810,56 @@
         "pilots": [
             1
         ]
+    }
+},
+{
+    "model": "report.report",
+    "pk": 1,
+    "fields": {
+        "date": "2026-09-22",
+        "created_at": "2026-09-22T16:54:20.640Z",
+        "updated_at": "2026-09-22T16:54:20.640Z",
+        "accompanied": 2
+    }
+},
+{
+    "model": "report.reportnote",
+    "pk": 1,
+    "fields": {
+        "title": "Продукты",
+        "text": "Купил овощи, молоко и сыр",
+        "created_at": "2026-09-22T16:55:44.194Z",
+        "report": 1,
+        "user": 2
+    }
+},
+{
+    "model": "report.reportnote",
+    "pk": 2,
+    "fields": {
+        "title": "Драка",
+        "text": "На сопровождаемого напал табун цыган. Я избил каждого цыгана и защитил человека от нападения.",
+        "created_at": "2026-09-22T16:57:21.806Z",
+        "report": 1,
+        "user": 2
+    }
+},
+{
+    "model": "report.reportnotephoto",
+    "pk": 1,
+    "fields": {
+        "photo": "report_photo/2026/09/22/produkty.jpg",
+        "created_at": "2026-09-22T16:55:44.197Z",
+        "report_note": 1
+    }
+},
+{
+    "model": "report.reportnotephoto",
+    "pk": 2,
+    "fields": {
+        "photo": "report_photo/2026/09/22/ц.webp",
+        "created_at": "2026-09-22T16:57:21.809Z",
+        "report_note": 2
     }
 }
 ]

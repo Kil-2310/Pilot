@@ -9,8 +9,8 @@ class Accompanied(models.Model):
     """Модель сопровождаемого"""
 
     class Meta:
-        verbose_name='Профиль сопровождаемого',
-        verbose_name_plural='Профили сопровождаемых',
+        verbose_name='Профиль сопровождаемого'
+        verbose_name_plural='Профили сопровождаемых'
 
     preview = models.ImageField(
         'Фото сопровождаемого',

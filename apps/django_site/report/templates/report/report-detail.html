@@ -33,5 +33,5 @@
 {% endfor %}
 
 {% if now_date == report.date %}
-    <a href="{% url 'report:report_note_create' report.pk %}">Создать заметку</a>
+    <a href="{% url 'report:report_note_create' pk=report.pk %}">Создать заметку</a>
 {% endif %}
