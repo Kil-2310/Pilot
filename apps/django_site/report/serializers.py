@@ -43,7 +43,7 @@ class ReportNoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReportNote
         fields = (
-            'title', 'text', 'first_name', 'last_name',
+            'id', 'title', 'text', 'first_name', 'last_name',
             'videos', 'photos', 'created_at',
         )
 
@@ -54,7 +54,7 @@ class BaseReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        fields = ('date', 'report_notes', )
+        fields = ('id', 'date', 'report_notes', )
 
 
 class GetReportSerializer(BaseReportSerializer):

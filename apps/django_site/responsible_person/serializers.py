@@ -6,7 +6,10 @@ class BaseResponsiblePersonSerializer(serializers.ModelSerializer):
     """Базовый сериализатор с общими полями для ответственного лица"""
     class Meta:
         model = ResponsiblePerson
-        fields = ('max_user_id', 'full_name', 'status', 'max_name', 'telephone', 'description')
+        fields = (
+            'id', 'max_user_id', 'full_name', 'status',
+            'max_name', 'telephone', 'description',
+        )
 
 
 class GetResponsiblePersonSerializer(BaseResponsiblePersonSerializer):

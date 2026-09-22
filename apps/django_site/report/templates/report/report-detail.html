@@ -1,11 +1,34 @@
 <h1>Детали отчета</h1>
 
-<p>Дата отчета: {{report.date}}</p>
+<p>Дата отчета: {{ report.date }}</p>
 
 <h2>Заметки</h2>
 
 {% for note in report.report_notes.all %}
-    <p>Заголовок заметки: {{note.title}}</p>
+    <p>Заголовок заметки: {{ note.title }}</p>
+    <p>Текст заметки: {{ note.text }}</p>
+
+    {% if note.photos.all %}
+        <h4>Фотографии:</h4>
+        {% for photo in note.photos.all %}
+            <div>
+                <img src="{{ photo.photo.url }}" alt="Фото для заметки {{ note.title }}" width="400">
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if note.videos.all %}
+        <h4>Видео:</h4>
+        {% for video in note.videos.all %}
+            <div>
+                <video width="400" controls>
+                    <source src="{{ video.video.url }}">
+                    Ваш браузер не поддерживает видео.
+                </video>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <hr>
 {% endfor %}
 
