@@ -12,6 +12,6 @@
 ## URL для API
 
     | URL | ApiView | Метод | Описание |
-    /detail/<pk>/ | ResponsiblePersonDetailApiView | GET | Получение деталей ответственного лица
+    /detail/<max_user_id>/ | ResponsiblePersonDetailApiView | GET | Получение деталей ответственного лица
     /create/ | ResponsiblePersonCreateApiView | POST | Создание нового ответственного лица
-    /update/<pk>/ | ResponsiblePersonUpdateApiView | PATCH | Частичное обновление ответственного лица
+    /update/<max_user_id>/ | ResponsiblePersonUpdateApiView | PATCH | Частичное обновление ответственного лица
