@@ -1,0 +1,14 @@
+<h1>Детали отчета</h1>
+
+<p>Дата отчета: {{report.date}}</p>
+
+<h2>Заметки</h2>
+
+{% for note in report.report_notes.all %}
+    <p>Заголовок заметки: {{note.title}}</p>
+    <hr>
+{% endfor %}
+
+{% if now_date == report.date %}
+    <a href="{% url 'report:report_note_create' report.pk %}">Создать заметку</a>
+{% endif %}

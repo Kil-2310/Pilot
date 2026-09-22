@@ -24,6 +24,6 @@
 <br>
 <a href="{% url 'accompanied:accompanied_update' pk=accompanied.pk %}">Обновить сопровождаемого</a>
 <br>
-<a href="{% url 'accompanied:accompanied_delete' pk=accompanied.pk %}">Удалить сопровождаемого</a>
-<br>
 <a href="{% url 'accompanied:accompanied_list' %}">Назад к списку сопровождаемых</a>
+<br>
+<a href="{% url 'report:report_by_accompanied' accompanied_pk=accompanied.pk %}">Отчеты о текущем сопровождаемом</a>
