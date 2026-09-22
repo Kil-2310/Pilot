@@ -15,4 +15,4 @@
 ## Url для API
     
     | URL | ApiView | Метод | Описание |
-    /persons-detail/<max_user_id>/ | AccompaniedListAPIView | GET | Получение всех сопровождаемых, привязанных к ответственному лицу
+    /persons-detail/<max_user_id>/ | AccompaniedRetrieveAPIView | GET | Получение всех сопровождаемых, привязанных к ответственному лицу
