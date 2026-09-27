@@ -6,4 +6,6 @@
 <p>Номер телефона: {{ pilot.telephone }}</p>
 <p>Биография пилота: {{ pilot.bio }}</p>
 
-<a href="{% url 'pilot:pilot_update' pk=pilot.id %}">Обновить профиль</a>
+{% if pilot.user == request.user %}
+    <a href="{% url 'pilot:pilot_update' pk=pilot.id %}">Обновить профиль</a>
+{% endif %}
