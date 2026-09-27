@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 from accompanied.models import Accompanied
+from .utils import get_full_report
 from .models import (
     Report,
     ReportNote,
@@ -29,9 +30,10 @@ class ReportListByAccompaniedView(LoginRequiredMixin, ListView):
 
         return (
             Report.objects
+            .only('date', )
             .filter(
-                accompanied__pilots = user.profile_pilot,
-                accompanied = accompanied
+                accompanied__pilots=user.profile_pilot,
+                accompanied=accompanied
             )
             [:3]
         )
@@ -46,7 +48,7 @@ class ReportDetailView(LoginRequiredMixin, DetailView):
         user = self.request.user
 
         return (
-            Report.objects
+            get_full_report()
             .filter(
                 accompanied__pilots = user.profile_pilot,
             )

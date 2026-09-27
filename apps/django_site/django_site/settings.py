@@ -195,11 +195,6 @@ logging.config.dictConfig({
 LOGIN_REDIRECT_URL = reverse_lazy('accompanied:accompanied_list')
 LOGIN_URL = reverse_lazy("authentication:login")
 
-
-# ============== Настройка медиа ==============
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
-
 # ============== Статика ==============
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -222,3 +217,39 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
 }
+
+
+# ============== Настройка для медиа ==============
+if not DEBUG:
+    """S3 для медиа"""
+    AWS_ACCESS_KEY_ID = getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = getenv('AWS_STORAGE_BUCKET_NAME')
+
+    AWS_S3_ENDPOINT_URL = 'https://s3.twcstorage.ru'
+    AWS_S3_REGION_NAME = 'ru-1'
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_QUERYSTRING_AUTH = False
+
+    # --- Настройки хранилищ ---
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": AWS_STORAGE_BUCKET_NAME,
+                "region_name": AWS_S3_REGION_NAME,
+                "access_key": AWS_ACCESS_KEY_ID,
+                "secret_key": AWS_SECRET_ACCESS_KEY,
+                "endpoint_url": AWS_S3_ENDPOINT_URL,
+                "location": 'media',
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+else:
+    """Локальные медиа"""
+    MEDIA_ROOT = BASE_DIR / 'media'
+    MEDIA_URL = '/media/'

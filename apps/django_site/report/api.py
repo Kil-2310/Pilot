@@ -7,7 +7,7 @@ from django.utils.dateparse import parse_date
 
 from accompanied.models import Accompanied
 from .serializers import GetReportSerializer
-from .models import Report
+from .utils import get_full_report
 
 
 extend_schema(
@@ -24,7 +24,11 @@ class ReportDetailByDateView(APIView):
             )
 
         accompanied = get_object_or_404(Accompanied, id=accompanied_id)
-        report = Report.objects.filter(accompanied=accompanied, date=date).first()
+        report = (
+            get_full_report()
+            .filter(accompanied=accompanied, date=date)
+            .first()
+        )
 
         if not report:
             return Response(
