@@ -9,30 +9,27 @@ from accompanied.models import Accompanied
 from .serializers import GetReportSerializer
 from .utils import get_full_report
 
-
 extend_schema(
-    tags=['report'],
-    description='Получение отчета по сопровождаемому',
+    tags=["report"],
+    description="Получение отчета по сопровождаемому",
 )
+
+
 class ReportDetailByDateView(APIView):
     def get(self, request: Request, accompanied_id: int, date: str) -> Response:
         """Получение отчета по сопровождаемому"""
         if parse_date(date) is None:
             return Response(
-                {'message': 'Неверный формат даты. Ожидается YYYY-MM-DD'},
+                {"message": "Неверный формат даты. Ожидается YYYY-MM-DD"},
                 status=400,
             )
 
         accompanied = get_object_or_404(Accompanied, id=accompanied_id)
-        report = (
-            get_full_report()
-            .filter(accompanied=accompanied, date=date)
-            .first()
-        )
+        report = get_full_report().filter(accompanied=accompanied, date=date).first()
 
         if not report:
             return Response(
-                {'message': 'Пилот не создал отчет в этот день'},
+                {"message": "Пилот не создал отчет в этот день"},
                 status=200,
             )
 

@@ -6,10 +6,12 @@ from .models import ProfilePilot, Settlement
 @admin.register(ProfilePilot)
 class ProfilePilotAdmin(admin.ModelAdmin):
     """Модель админки для профиля пилота"""
-    list_display = ('telephone', 'max_name', 'vk_name')
+
+    list_display = ("telephone", "max_name", "vk_name")
 
 
 @admin.register(Settlement)
 class SettlementAdmin(admin.ModelAdmin):
     """Модель админки для населенных пунктов"""
-    list_display = ('name', )
+
+    list_display = ("name",)

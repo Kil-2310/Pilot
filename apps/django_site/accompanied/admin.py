@@ -6,4 +6,5 @@ from .models import Accompanied
 @admin.register(Accompanied)
 class AccompaniedAdmin(admin.ModelAdmin):
     """Модель админки для сопровождаемого"""
-    list_display = ('full_name', 'date_birth', 'is_active')
+
+    list_display = ("full_name", "date_birth", "is_active")

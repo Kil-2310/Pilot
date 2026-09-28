@@ -4,7 +4,13 @@ from django.db import models
 class ResponsiblePersonQuerySet(models.QuerySet):
     def get_only(self):
         """Получение определенных полей"""
-        return self.only('full_name', 'status', 'max_name', 'telephone', 'description', )
+        return self.only(
+            "full_name",
+            "status",
+            "max_name",
+            "telephone",
+            "description",
+        )
 
     def get_active(self):
         """Получение активных пользователей"""

@@ -10,33 +10,36 @@ from .serializers import (
 
 
 @extend_schema(
-    tags=['responsible_person'],
-    description='Получение деталей профиля',
+    tags=["responsible_person"],
+    description="Получение деталей профиля",
 )
 class ResponsiblePersonDetailApiView(RetrieveAPIView):
     """Получение деталей профиля"""
+
     queryset = ResponsiblePerson.objects.get_only().get_active()
     serializer_class = GetResponsiblePersonSerializer
-    lookup_field = 'max_user_id'
+    lookup_field = "max_user_id"
 
 
 @extend_schema(
-    tags=['responsible_person'],
-    description='Создание ответственного лица',
+    tags=["responsible_person"],
+    description="Создание ответственного лица",
 )
 class ResponsiblePersonCreateApiView(CreateAPIView):
     """Создание ответственного лица"""
+
     model = ResponsiblePerson
     serializer_class = CreateResponsiblePersonSerializer
 
 
 @extend_schema(
-    tags=['responsible_person'],
-    description='Обновление ответственного лица',
+    tags=["responsible_person"],
+    description="Обновление ответственного лица",
 )
 class ResponsiblePersonUpdateApiView(UpdateAPIView):
     """Обновление ответственного лица"""
+
     queryset = ResponsiblePerson.objects.get_only().get_active()
     serializer_class = UpdateResponsiblePersonSerializer
-    http_method_names = ['patch']
-    lookup_field = 'max_user_id'
+    http_method_names = ["patch"]
+    lookup_field = "max_user_id"

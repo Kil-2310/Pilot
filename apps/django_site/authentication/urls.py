@@ -3,7 +3,6 @@ from django.contrib.auth.views import LoginView
 
 from .views import logout_view
 
-
 app_name = "authentication"
 
 urlpatterns = [
@@ -15,5 +14,5 @@ urlpatterns = [
         ),
         name="login",
     ),
-    path('logout/', logout_view, name="logout"),
+    path("logout/", logout_view, name="logout"),
 ]

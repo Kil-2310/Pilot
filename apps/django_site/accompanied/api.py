@@ -15,22 +15,20 @@ from .serializers import (
 
 class AccompaniedRetrieveAPIView(APIView):
     @extend_schema(
-        tags=['accompanied'],
-        description='Получение всех сопровождаемых, привязанных к ответственному лицу',
+        tags=["accompanied"],
+        description="Получение всех сопровождаемых, привязанных к ответственному лицу",
     )
     def get(self, request: Request, max_user_id: int) -> Response:
         """Получение всех сопровождаемых, привязанных к ответственному лицу"""
-        responsible_person = get_object_or_404(ResponsiblePerson, max_user_id=max_user_id)
+        responsible_person = get_object_or_404(
+            ResponsiblePerson, max_user_id=max_user_id
+        )
 
         accompanied_individuals = (
-            Accompanied.objects
-            .filter(responsible_person=responsible_person)
-            .select_related('responsible_person')
+            Accompanied.objects.filter(responsible_person=responsible_person)
+            .select_related("responsible_person")
             .prefetch_related(
-                Prefetch(
-                    'pilots',
-                    queryset=ProfilePilot.objects.select_related('user')
-                )
+                Prefetch("pilots", queryset=ProfilePilot.objects.select_related("user"))
             )
         )
 

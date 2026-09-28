@@ -21,3 +21,6 @@ jobs:
 
       - name: Install python dependencies
         run: pip install -r $GITHUB_WORKSPACE/apps/django_site/requirements.txt
+
+      - name: Check formating code
+        run: black --check $GITHUB_WORKSPACE/apps/django_site/

@@ -6,7 +6,7 @@ class AccompaniedQuerySet(models.QuerySet):
         """Получение активных сопровождаемых"""
         return self.filter(is_active=True)
 
-    def get_by_pilot(self, pilot: 'ProfilePilot'):
+    def get_by_pilot(self, pilot: "ProfilePilot"):
         """Получение сопровождаемых, к которым текущий пользователь (пилот) имеет доступ"""
         return self.filter(pilots=pilot)
 

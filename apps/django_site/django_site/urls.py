@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -21,29 +22,39 @@ from django.conf.urls.static import static
 from django_site import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-
-    path('authentication/', include('authentication.urls')),
-    path('pilot/', include('pilot.urls')),
-    path('responsible-person/', include('responsible_person.urls')),
-    path('accompanied/', include('accompanied.urls')),
-    path('report/', include('report.urls')),
-
-    path('api/responsible-person/', include('responsible_person.api_urls')),
-    path('api/pilot/', include('pilot.api_urls')),
-    path('api/accompanied/', include('accompanied.api_urls')),
-    path('api/report/', include('report.api_urls')),
+    path("admin/", admin.site.urls),
+    path("authentication/", include("authentication.urls")),
+    path("pilot/", include("pilot.urls")),
+    path("responsible-person/", include("responsible_person.urls")),
+    path("accompanied/", include("accompanied.urls")),
+    path("report/", include("report.urls")),
+    path("api/responsible-person/", include("responsible_person.api_urls")),
+    path("api/pilot/", include("pilot.api_urls")),
+    path("api/accompanied/", include("accompanied.api_urls")),
+    path("api/report/", include("report.api_urls")),
 ]
 
 if settings.DEBUG:
-    from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+    from drf_spectacular.views import (
+        SpectacularAPIView,
+        SpectacularRedocView,
+        SpectacularSwaggerView,
+    )
 
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     schemas = [
-        path('api/schema/', SpectacularAPIView.as_view(), name="schema"),
-        path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
-        path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+        path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+        path(
+            "api/schema/swagger/",
+            SpectacularSwaggerView.as_view(url_name="schema"),
+            name="swagger",
+        ),
+        path(
+            "api/schema/redoc/",
+            SpectacularRedocView.as_view(url_name="schema"),
+            name="redoc",
+        ),
     ]
     urlpatterns.extend(schemas)

@@ -7,7 +7,7 @@ from .api import (
 )
 
 urlpatterns = [
-    path('', ProfilePilotListAPIView.as_view()),
-    path('detail/<int:pk>/', ProfilePilotRetrieveAPIView.as_view()),
-    path('settlement/', SettlementListAPIView.as_view()),
+    path("", ProfilePilotListAPIView.as_view()),
+    path("detail/<int:pk>/", ProfilePilotRetrieveAPIView.as_view()),
+    path("settlement/", SettlementListAPIView.as_view()),
 ]

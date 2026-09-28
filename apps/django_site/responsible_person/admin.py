@@ -6,4 +6,9 @@ from .models import ResponsiblePerson
 @admin.register(ResponsiblePerson)
 class ResponsiblePersonAdmin(admin.ModelAdmin):
     """Модель админки для ответственного лица"""
-    list_display = ('full_name', 'status', 'max_name', )
+
+    list_display = (
+        "full_name",
+        "status",
+        "max_name",
+    )

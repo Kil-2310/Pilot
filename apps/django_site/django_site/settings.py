@@ -16,7 +16,6 @@ from os import getenv
 
 from django.urls import reverse_lazy
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv('SECRET_KEY', 'django-insecure-fh_wan5bo5hvr=(7*y1jar%%a580e&mb_8n7i0lkskc^kl5hrp')
+SECRET_KEY = getenv(
+    "SECRET_KEY", "django-insecure-fh_wan5bo5hvr=(7*y1jar%%a580e&mb_8n7i0lkskc^kl5hrp"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv("DJANGO_DEBUG", "1") == "1"
@@ -35,7 +36,9 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "0.0.0.0",
     "localhost",
-] + getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
+] + getenv(
+    "DJANGO_ALLOWED_HOSTS", ""
+).split(",")
 
 
 if not DEBUG:
@@ -46,68 +49,66 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'rest_framework',
-    'drf_spectacular',
-    'django_filters',
-
-    'authentication.apps.AuthenticationConfig',
-    'pilot.apps.PilotConfig',
-    'responsible_person.apps.ResponsiblePersonConfig',
-    'accompanied.apps.AccompaniedConfig',
-    'report.apps.ReportConfig',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "drf_spectacular",
+    "django_filters",
+    "authentication.apps.AuthenticationConfig",
+    "pilot.apps.PilotConfig",
+    "responsible_person.apps.ResponsiblePersonConfig",
+    "accompanied.apps.AccompaniedConfig",
+    "report.apps.ReportConfig",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'django_site.urls'
+ROOT_URLCONF = "django_site.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'django_site.wsgi.application'
+WSGI_APPLICATION = "django_site.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 if DEBUG:
-    print('--- Database is SqLite ---')
+    print("--- Database is SqLite ---")
 
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 else:
-    print('--- Database is PostgreSQL ---')
+    print("--- Database is PostgreSQL ---")
 
     POSTGRES_USER = getenv("POSTGRES_USER")
     POSTGRES_PASSWORD = getenv("POSTGRES_PASSWORD")
@@ -115,13 +116,13 @@ else:
     POSTGRES_PORT = getenv("POSTGRES_PORT")
 
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': POSTGRES_NAME,
-            'USER': POSTGRES_USER,
-            'PASSWORD': POSTGRES_PASSWORD,
-            'HOST': "postgres",
-            'PORT': POSTGRES_PORT,
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": POSTGRES_NAME,
+            "USER": POSTGRES_USER,
+            "PASSWORD": POSTGRES_PASSWORD,
+            "HOST": "postgres",
+            "PORT": POSTGRES_PORT,
         }
     }
 
@@ -130,16 +131,16 @@ else:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -147,9 +148,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -159,8 +160,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
 MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    "default": {
+        "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
 
@@ -168,53 +169,53 @@ MAILERS = {
 # ============== Логирование ==============
 LOGLEVEL = getenv("DJANGO_LOGLEVEL", "INFO")
 
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': False,
-    "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(message)s"
+logging.config.dictConfig(
+    {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "verbose": {"format": "%(levelname)s %(asctime)s %(module)s %(message)s"},
         },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "formatter": "verbose",
+            },
         },
-    },
-    "loggers": {
-        "": {
-            "handlers": ["console"],
-            "level": LOGLEVEL,
+        "loggers": {
+            "": {
+                "handlers": ["console"],
+                "level": LOGLEVEL,
+            },
         },
-    },
-})
+    }
+)
 
 
 # ============== Редиректы для аутентификации ==============
-LOGIN_REDIRECT_URL = reverse_lazy('accompanied:accompanied_list')
+LOGIN_REDIRECT_URL = reverse_lazy("accompanied:accompanied_list")
 LOGIN_URL = reverse_lazy("authentication:login")
 
 # ============== Статика ==============
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # ============== Настройка swagger ==============
 SPECTACULAR_SETTINGS = {
-   'TITLE': 'API for MAX bot',
-   'VERSION': '1.0.0',
-   'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "API for MAX bot",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 
 # ============== Настройка REST FRAMEWORK ==============
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
     ],
 }
 
@@ -222,14 +223,14 @@ REST_FRAMEWORK = {
 # ============== Настройка для медиа ==============
 if not DEBUG:
     """S3 для медиа"""
-    AWS_ACCESS_KEY_ID = getenv('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = getenv('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME")
 
-    AWS_S3_ENDPOINT_URL = 'https://s3.twcstorage.ru'
-    AWS_S3_REGION_NAME = 'ru-1'
+    AWS_S3_ENDPOINT_URL = "https://s3.twcstorage.ru"
+    AWS_S3_REGION_NAME = "ru-1"
     AWS_S3_FILE_OVERWRITE = False
-    AWS_DEFAULT_ACL = 'public-read'
+    AWS_DEFAULT_ACL = "public-read"
     AWS_QUERYSTRING_AUTH = False
 
     # --- Настройки хранилищ ---
@@ -242,7 +243,7 @@ if not DEBUG:
                 "access_key": AWS_ACCESS_KEY_ID,
                 "secret_key": AWS_SECRET_ACCESS_KEY,
                 "endpoint_url": AWS_S3_ENDPOINT_URL,
-                "location": 'media',
+                "location": "media",
             },
         },
         "staticfiles": {
@@ -251,5 +252,5 @@ if not DEBUG:
     }
 else:
     """Локальные медиа"""
-    MEDIA_ROOT = BASE_DIR / 'media'
-    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / "media"
+    MEDIA_URL = "/media/"
