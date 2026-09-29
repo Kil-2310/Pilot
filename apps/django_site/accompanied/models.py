@@ -20,9 +20,7 @@ class Accompanied(models.Model):
     )
     full_name = models.CharField("ФИО", max_length=255)
     date_birth = models.DateField("Дата рождения")
-    description = models.TextField(
-        "Описание сопровождаемого", max_length=500, blank=True
-    )
+    description = models.TextField("Описание сопровождаемого", max_length=500, blank=True)
     health_problems = models.TextField("Проблемы со здоровьем", max_length=800)
     tasks = models.TextField("Задачи пилота", max_length=800)
     is_active = models.BooleanField("Пользователь активен", default=True)

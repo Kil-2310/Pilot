@@ -15,6 +15,8 @@ class ProfilePilotDetailView(LoginRequiredMixin, DetailView):
 
 
 class ProfilePilotUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """Обновление профиля пилота"""
+
     model = ProfilePilot
     fields = ("description", "vk_name", "max_name", "telephone")
     template_name = "pilot/pilot-update.html"
