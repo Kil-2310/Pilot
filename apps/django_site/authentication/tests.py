@@ -17,6 +17,7 @@ class LoginTests(TestCase):
 
     def test_1(self):
         """Успешный тест аутентификации"""
+
         response = self.client.post(
             reverse("authentication:login"),
             data={
@@ -25,6 +26,22 @@ class LoginTests(TestCase):
             },
         )
         self.assertEqual(response.status_code, 302)
+
+    def test_2(self):
+        """
+        Провальный тест аутентификации:
+        неверный пароль от существующего пользователя
+        """
+
+        response = self.client.post(
+            reverse("authentication:login"),
+            data={
+                "username": self.user.username,
+                "password": "123",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
 
 
 class LogoutTest(TestCase):
@@ -35,13 +52,10 @@ class LogoutTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-
         cls.user = User.objects.get(**TEST_USER_DATA)
-
-    def setUp(self):
-        self.client.force_login(self.user)
 
     def test_1(self):
         """Успешный тест выхода из аккаунта"""
+        self.client.force_login(self.user)
         response = self.client.post(reverse("authentication:logout"))
         self.assertEqual(response.status_code, 302)

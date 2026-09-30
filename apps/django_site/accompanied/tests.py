@@ -124,7 +124,7 @@ class AccompaniedUpdateViewTests(TestCase):
         self.assertTrue(Accompanied.objects.filter(full_name=test_user_name).exists())
 
 
-class AccompaniedRetrieveAPIViewTest(TestCase):
+class AccompaniedRetrieveAPIViewTests(TestCase):
     """Тест на получение всех сопровождаемых, привязанных к ответственному лицу"""
 
     fixtures = ["site_data.json"]
