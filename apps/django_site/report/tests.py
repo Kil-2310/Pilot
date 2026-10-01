@@ -20,7 +20,6 @@ class ReportListByAccompaniedViewTests(TestCase):
         """Успешное получение списка отчетов"""
 
         self.client.force_login(self.user)
-
         response = self.client.get(
             reverse("report:report_by_accompanied", kwargs={"accompanied_pk": 1})
         )

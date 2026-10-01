@@ -11,10 +11,10 @@ class ResponsiblePerson(models.Model):
         verbose_name_plural = "Профили ответственных лиц"
 
     class Status(models.TextChoices):
-        PARENT = "parent", "родитель"
-        GUARDIAN = "guardian", "опекун"
-        FRIEND = "friend", "друг"
-        OTHER = "other", "другое"
+        PARENT = "родитель", "родитель"
+        GUARDIAN = "опекун", "опекун"
+        FRIEND = "друг", "друг"
+        OTHER = "другое", "другое"
 
     full_name = models.CharField("ФИО", max_length=255)
     status = models.CharField(
@@ -23,8 +23,8 @@ class ResponsiblePerson(models.Model):
         choices=Status.choices,
         default=Status.OTHER,
     )
-    max_name = models.CharField("Имя в MAX", max_length=50, unique=True)
-    max_user_id = models.IntegerField("ID в MAX")
+    max_name = models.CharField("Имя в MAX", max_length=50, blank=True)
+    max_user_id = models.IntegerField("ID в MAX", unique=True)
     telephone = models.CharField("Номер телефона", max_length=15, unique=True)
     description = models.TextField("Описание", max_length=500, blank=True)
     is_active = models.BooleanField("Активен", default=True)
