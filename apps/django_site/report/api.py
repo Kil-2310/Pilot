@@ -11,13 +11,13 @@ from .utils import get_full_report
 
 extend_schema(
     tags=["report"],
-    description="Получение отчета по сопровождаемому",
+    description="Получение отчета по сопровождаемому и дате",
 )
 
 
 class ReportDetailByDateView(APIView):
     def get(self, request: Request, accompanied_id: int, date: str) -> Response:
-        """Получение отчета по сопровождаемому"""
+        """Получение отчета по сопровождаемому и дате"""
         if parse_date(date) is None:
             return Response(
                 {"message": "Неверный формат даты. Ожидается YYYY-MM-DD"},

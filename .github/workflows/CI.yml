@@ -19,8 +19,11 @@ jobs:
         with:
           python-version: '3.12.3'
 
-      - name: Install python dependencies
+      - name: Install Python Dependencies
         run: pip install -r $GITHUB_WORKSPACE/apps/django_site/requirements.txt
 
-      - name: Check formating code
+      - name: Check Formating Code
         run: black --check $GITHUB_WORKSPACE/apps/django_site/
+
+      - name: Run Tests
+        run: python $GITHUB_WORKSPACE/apps/django_site/manage.py test

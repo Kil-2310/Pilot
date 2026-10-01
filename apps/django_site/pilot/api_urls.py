@@ -6,8 +6,10 @@ from .api import (
     SettlementListAPIView,
 )
 
+app_name = "api_pilot"
+
 urlpatterns = [
-    path("", ProfilePilotListAPIView.as_view()),
-    path("detail/<int:pk>/", ProfilePilotRetrieveAPIView.as_view()),
-    path("settlement/", SettlementListAPIView.as_view()),
+    path("", ProfilePilotListAPIView.as_view(), name="pilot_list"),
+    path("detail/<int:pk>/", ProfilePilotRetrieveAPIView.as_view(), name="pilot_detail"),
+    path("settlement/", SettlementListAPIView.as_view(), name="settlement_list"),
 ]

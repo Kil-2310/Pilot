@@ -254,3 +254,10 @@ else:
     """Локальные медиа"""
     MEDIA_ROOT = BASE_DIR / "media"
     MEDIA_URL = "/media/"
+
+
+# ============== Тестовые данные для пользвателя ==============
+TEST_USER_DATA = {
+    "username": "bob",
+    "password": "pbkdf2_sha256$1500000$br0y2efZ3KGYOG1L2ceNUe$NQEr2bH0XK8WqnZSWPe1Kxi2EgQdQrR1MRu4U3sIy5U=",
+}

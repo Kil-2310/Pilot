@@ -11,10 +11,10 @@ from .serializers import (
 
 @extend_schema(
     tags=["responsible_person"],
-    description="Получение деталей профиля",
+    description="Получение деталей ответственного лица",
 )
 class ResponsiblePersonDetailApiView(RetrieveAPIView):
-    """Получение деталей профиля"""
+    """Получение деталей ответственного лица"""
 
     queryset = ResponsiblePerson.objects.get_only().get_active()
     serializer_class = GetResponsiblePersonSerializer

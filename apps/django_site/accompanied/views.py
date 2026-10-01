@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 from django.urls import reverse_lazy, reverse
 
@@ -6,31 +6,33 @@ from .models import Accompanied
 
 
 class AccompaniedListView(LoginRequiredMixin, ListView):
-    """Получение списка всех сопровождаемых, привязанных к данному пользователю"""
+    """Получение списка всех сопровождаемых, привязанных к данному пилоту"""
 
     template_name = "accompanied/accompanied-list.html"
     context_object_name = "accompanied_individuals"
 
     def get_queryset(self):
-        user = self.request.user
+        pilot = self.request.user.profile_pilot
         return (
             Accompanied.objects.get_active()
-            .get_by_pilot(user.profile_pilot)
+            .get_by_pilot(pilot)
             .only("preview", "full_name", "date_birth", "description")
         )
 
 
-class AccompaniedDetailView(LoginRequiredMixin, DetailView):
-    """Получение деталей сопровождаемого, привязанного к данному пользователю"""
+class AccompaniedDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    """Получение деталей сопровождаемого, привязанного к данному пилоту"""
 
     template_name = "accompanied/accompanied-detail.html"
     context_object_name = "accompanied"
 
+    def test_func(self):
+        pilot = self.request.user.profile_pilot
+        return self.get_object().pilots.filter(pk=pilot.pk).exists()
+
     def get_queryset(self):
-        user = self.request.user
         return (
             Accompanied.objects.get_active()
-            .get_by_pilot(user.profile_pilot)
             .only(
                 "preview",
                 "full_name",
@@ -68,7 +70,7 @@ class AccompaniedCreateView(LoginRequiredMixin, CreateView):
         return response
 
 
-class AccompaniedUpdateView(LoginRequiredMixin, UpdateView):
+class AccompaniedUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """Обновление сопровождаемого"""
 
     model = Accompanied
@@ -81,6 +83,10 @@ class AccompaniedUpdateView(LoginRequiredMixin, UpdateView):
         "tasks",
         "responsible_person",
     )
+
+    def test_func(self):
+        pilot = self.request.user.profile_pilot
+        return self.get_object().pilots.filter(pk=pilot.pk).exists()
 
     template_name = "accompanied/accompanied-update.html"
 
