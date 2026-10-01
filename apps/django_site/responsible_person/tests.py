@@ -116,12 +116,13 @@ class ResponsiblePersonCreateApiViewTests(TestCase):
 
     fixtures = ["site_data.json"]
 
-    def test_1(self):
-        """Успешное создание ответственного лица"""
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        test_max_user_id = 2
-        test_post_data = {
-            "max_user_id": test_max_user_id,
+        cls.test_max_user_id = 2
+        cls.test_post_data = {
+            "max_user_id": cls.test_max_user_id,
             "full_name": "Воронов Георгий Эльдарович",
             "status": "друг",
             "max_name": "",
@@ -129,14 +130,17 @@ class ResponsiblePersonCreateApiViewTests(TestCase):
             "description": "",
         }
 
+    def test_1(self):
+        """Успешное создание ответственного лица"""
+
         self.client.post(
             reverse("api_responsible_person:responsible_person_create"),
-            data=json.dumps(test_post_data),
+            data=json.dumps(self.test_post_data),
             content_type="application/json",
         )
 
         self.assertTrue(
-            ResponsiblePerson.objects.filter(max_user_id=test_max_user_id).exists()
+            ResponsiblePerson.objects.filter(max_user_id=self.test_max_user_id).exists()
         )
 
     def test_2(self):
@@ -145,15 +149,8 @@ class ResponsiblePersonCreateApiViewTests(TestCase):
         нарушена уникальность max_user_id
         """
 
-        test_full_name = "Воронов Артем Эльдарович"
-        test_post_data = {
-            "max_user_id": 1,
-            "full_name": test_full_name,
-            "status": "друг",
-            "max_name": "",
-            "telephone": "8 999 999 99 99",
-            "description": "",
-        }
+        test_post_data = self.test_post_data.copy()
+        test_post_data["max_user_id"] = 1
 
         response = self.client.post(
             reverse("api_responsible_person:responsible_person_create"),
@@ -169,29 +166,33 @@ class ResponsiblePersonUpdateApiViewTests(TestCase):
 
     fixtures = ["site_data.json"]
 
-    def test_1(self):
-        """Успешное обновление"""
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        test_full_name = "Воронов Артем Эльдарович"
-        test_post_data = {
-            "full_name": test_full_name,
+        cls.test_full_name = "Воронов Артем Эльдарович"
+        cls.test_post_data = {
+            "full_name": cls.test_full_name,
             "status": "друг",
             "max_name": "",
-            "telephone": "8 999 999 99 99",
+            "telephone": "8 999 999 99 11",
             "description": "",
         }
+
+    def test_1(self):
+        """Успешное обновление"""
 
         self.client.patch(
             reverse(
                 "api_responsible_person:responsible_person_update",
                 kwargs={"max_user_id": 1},
             ),
-            data=json.dumps(test_post_data),
+            data=json.dumps(self.test_post_data),
             content_type="application/json",
         )
 
         self.assertTrue(
-            ResponsiblePerson.objects.filter(full_name=test_full_name).exists()
+            ResponsiblePerson.objects.filter(full_name=self.test_full_name).exists()
         )
 
     def test_2(self):
@@ -200,21 +201,12 @@ class ResponsiblePersonUpdateApiViewTests(TestCase):
         ответственное лицо не найдено
         """
 
-        test_full_name = "Воронов Артем Эльдарович"
-        test_post_data = {
-            "full_name": test_full_name,
-            "status": "друг",
-            "max_name": "",
-            "telephone": "8 999 999 99 99",
-            "description": "",
-        }
-
         response = self.client.patch(
             reverse(
                 "api_responsible_person:responsible_person_update",
                 kwargs={"max_user_id": 3},
             ),
-            data=json.dumps(test_post_data),
+            data=json.dumps(self.test_post_data),
             content_type="application/json",
         )
 
@@ -226,14 +218,8 @@ class ResponsiblePersonUpdateApiViewTests(TestCase):
         неверное значение в поле модели status
         """
 
-        test_full_name = "Воронов Артем Эльдарович"
-        test_post_data = {
-            "full_name": test_full_name,
-            "status": "неверное значение",
-            "max_name": "",
-            "telephone": "8 999 999 99 99",
-            "description": "",
-        }
+        test_post_data = self.test_post_data.copy()
+        test_post_data["status"] = "invalid"
 
         response = self.client.patch(
             reverse(

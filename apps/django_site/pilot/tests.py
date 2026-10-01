@@ -46,36 +46,29 @@ class ProfilePilotUpdateViewTests(TestCase):
         super().setUpClass()
         cls.user = User.objects.get(**TEST_USER_DATA)
 
-    def test_1(self):
-        """Успешное обновление профиля"""
-
-        self.client.force_login(self.user)
-
-        vk_name = "New username"
-
-        test_data = {
+        cls.new_vk_name = "new_username"
+        cls.test_post_data = {
             "description": "Новое описание",
-            "vk_name": vk_name,
+            "vk_name": cls.new_vk_name,
             "max_name": "",
             "telephone": "8 999 999 99 99",
         }
 
-        self.client.post(reverse("pilot:pilot_update", kwargs={"pk": 1}), data=test_data)
+    def test_1(self):
+        """Успешное обновление профиля"""
 
-        self.assertTrue(ProfilePilot.objects.filter(vk_name=vk_name).exists())
+        self.client.force_login(self.user)
+        self.client.post(
+            reverse("pilot:pilot_update", kwargs={"pk": 1}), data=self.test_post_data
+        )
+
+        self.assertTrue(ProfilePilot.objects.filter(vk_name=self.new_vk_name).exists())
 
     def test_2(self):
         """
         Провальное обновление данных:
         пилот пытается обновить профиль другого пилота
         """
-        test_post_data = {
-            "description": "Новое описание",
-            "vk_name": "",
-            "max_name": "",
-            "telephone": "8 999 999 99 99",
-        }
-
         new_user = User.objects.create_user(
             username="test_user",
             password="123",
@@ -85,7 +78,7 @@ class ProfilePilotUpdateViewTests(TestCase):
         self.client.force_login(new_user)
 
         response = self.client.post(
-            reverse("pilot:pilot_update", kwargs={"pk": 1}), data=test_post_data
+            reverse("pilot:pilot_update", kwargs={"pk": 1}), data=self.test_post_data
         )
 
         self.assertEqual(response.status_code, 403)

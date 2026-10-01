@@ -122,17 +122,19 @@ class ReportNoteCreateViewTests(TestCase):
     def setUpTestData(cls):
         cls.user = User.objects.get(**TEST_USER_DATA)
 
-    def test_1(self):
-        """Успешное создание заметки"""
-
-        self.client.force_login(self.user)
-        test_post_data = {
+        cls.test_post_data = {
             "title": "Покупка продуктов",
             "text": "Купил молоко, хлеб, кефир",
         }
 
+    def test_1(self):
+        """Успешное создание заметки"""
+
+        self.client.force_login(self.user)
+
         response = self.client.post(
-            reverse("report:report_note_create", kwargs={"pk": 1}), data=test_post_data
+            reverse("report:report_note_create", kwargs={"pk": 1}),
+            data=self.test_post_data,
         )
 
         self.assertEqual(response.status_code, 302)
@@ -143,13 +145,9 @@ class ReportNoteCreateViewTests(TestCase):
         пилот не вошел в свой аккаунт
         """
 
-        test_post_data = {
-            "title": "Покупка продуктов",
-            "text": "Купил молоко, хлеб, кефир",
-        }
-
         response = self.client.post(
-            reverse("report:report_note_create", kwargs={"pk": 1}), data=test_post_data
+            reverse("report:report_note_create", kwargs={"pk": 1}),
+            data=self.test_post_data,
         )
 
         self.assertEqual(response.status_code, 302)
@@ -171,7 +169,6 @@ class ReportNoteCreateViewTests(TestCase):
         )
 
         self.client.force_login(new_user)
-
         response = self.client.get(reverse("report:report_note_create", kwargs={"pk": 1}))
 
         self.assertEqual(response.status_code, 403)
