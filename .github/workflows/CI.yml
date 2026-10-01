@@ -26,4 +26,6 @@ jobs:
         run: black --check $GITHUB_WORKSPACE/apps/django_site/
 
       - name: Run Tests
-        run: python $GITHUB_WORKSPACE/apps/django_site/manage.py test
+        run: |
+          cd $GITHUB_WORKSPACE/apps/django_site/
+          python manage.py test
