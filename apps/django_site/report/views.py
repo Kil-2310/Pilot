@@ -27,7 +27,7 @@ class ReportListByAccompaniedView(LoginRequiredMixin, UserPassesTestMixin, ListV
 
     def test_func(self):
         pilot = self.request.user.profile_pilot
-        return pilot in self.accompanied.pilots.all()
+        return self.accompanied.pilots.filter(pk=pilot.pk).exists()
 
     def get_queryset(self):
         Report.objects.get_or_create(
@@ -50,7 +50,7 @@ class ReportDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
     def test_func(self):
         pilot = self.request.user.profile_pilot
-        return pilot in self.get_object().accompanied.pilots.all()
+        return self.get_object().accompanied.pilots.filter(pk=pilot.pk).exists()
 
     def get_queryset(self):
         return get_full_report()
@@ -77,7 +77,7 @@ class ReportNoteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def test_func(self):
         pilot = self.request.user.profile_pilot
-        return pilot in self.report.accompanied.pilots.all()
+        return self.report.accompanied.pilots.filter(pk=pilot.pk).exists()
 
     def form_valid(self, form):
         form.instance.report = self.report
