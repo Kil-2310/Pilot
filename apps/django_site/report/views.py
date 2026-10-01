@@ -1,8 +1,9 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.functional import cached_property
 
 from accompanied.models import Accompanied
 from .utils import get_full_report
@@ -14,40 +15,45 @@ from .models import (
 )
 
 
-class ReportListByAccompaniedView(LoginRequiredMixin, ListView):
+class ReportListByAccompaniedView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """Создание ежедневного отчета и получение списка из последних 3 отчетов"""
 
     template_name = "report/report-list.html"
     context_object_name = "reports"
 
-    def get_queryset(self):
-        user = self.request.user
-        accompanied = get_object_or_404(Accompanied, pk=self.kwargs["accompanied_pk"])
+    @cached_property
+    def accompanied(self):
+        return get_object_or_404(Accompanied, pk=self.kwargs["accompanied_pk"])
 
+    def test_func(self):
+        pilot = self.request.user.profile_pilot
+        return pilot in self.accompanied.pilots.all()
+
+    def get_queryset(self):
         Report.objects.get_or_create(
-            accompanied=accompanied,
+            accompanied=self.accompanied,
             date=timezone.now().date(),
         )
 
         return Report.objects.only(
             "date",
         ).filter(
-            accompanied__pilots=user.profile_pilot, accompanied=accompanied
+            accompanied=self.accompanied
         )[:3]
 
 
-class ReportDetailView(LoginRequiredMixin, DetailView):
+class ReportDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Получение деталей отчета"""
 
     template_name = "report/report-detail.html"
     context_object_name = "report"
 
-    def get_queryset(self):
-        user = self.request.user
+    def test_func(self):
+        pilot = self.request.user.profile_pilot
+        return pilot in self.get_object().accompanied.pilots.all()
 
-        return get_full_report().filter(
-            accompanied__pilots=user.profile_pilot,
-        )
+    def get_queryset(self):
+        return get_full_report()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -55,7 +61,7 @@ class ReportDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class ReportNoteCreateView(LoginRequiredMixin, CreateView):
+class ReportNoteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     """Создание заметки"""
 
     model = ReportNote
@@ -65,12 +71,17 @@ class ReportNoteCreateView(LoginRequiredMixin, CreateView):
         "text",
     )
 
-    def form_valid(self, form):
-        user = self.request.user
-        report = get_object_or_404(Report, pk=self.kwargs["pk"])
+    @cached_property
+    def report(self):
+        return get_object_or_404(Report, pk=self.kwargs["pk"])
 
-        form.instance.report = report
-        form.instance.user = user
+    def test_func(self):
+        pilot = self.request.user.profile_pilot
+        return pilot in self.report.accompanied.pilots.all()
+
+    def form_valid(self, form):
+        form.instance.report = self.report
+        form.instance.user = self.request.user
 
         response = super().form_valid(form)
 
