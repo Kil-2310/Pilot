@@ -1,6 +1,6 @@
-"""Общие хендлеры бота: приветствие, /start, /ping."""
+"""Общие хендлеры бота: приветствие при запуске и /ping."""
 from maxapi import Router
-from maxapi.filters.command import Command, CommandStart
+from maxapi.filters.command import Command
 from maxapi.types.updates.bot_started import BotStarted
 from maxapi.types.updates.message_created import MessageCreated
 
@@ -13,16 +13,6 @@ async def on_bot_started(event: BotStarted) -> None:
     await event.bot.send_message(
         chat_id=event.chat_id,
         text="Привет! Это бот проекта «Пилот». Отправьте /start, чтобы начать.",
-    )
-
-
-@router.message_created(CommandStart())
-async def on_start(event: MessageCreated) -> None:
-    """Обработка команды /start."""
-    await event.message.answer(
-        "Бот проекта «Пилот» запущен.\n"
-        "Основной функционал (регистрация ответственного лица, список "
-        "пилотов, отчёты) будет добавлен отдельно."
     )
 
 

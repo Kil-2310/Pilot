@@ -5,6 +5,7 @@ from maxapi import Bot, Dispatcher
 from maxapi.context import MemoryContext
 
 from bot.routers.common import router as common_router
+from bot.routers.registration import router as registration_router
 from config import Settings
 
 log = logging.getLogger(__name__)
@@ -33,6 +34,6 @@ def build_dispatcher(settings: Settings) -> tuple[Bot, Dispatcher]:
         dp = Dispatcher(storage=MemoryContext)
         log.info("FSM-хранилище: память процесса (REDIS_URL не задан)")
 
-    dp.include_routers(common_router)
+    dp.include_routers(common_router, registration_router)
 
     return bot, dp
