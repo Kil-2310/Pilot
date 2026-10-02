@@ -58,3 +58,15 @@ services:
     image: grafana/loki:2.8.0
     ports:
       - "3100:3100"
+
+  redis:
+    image: redis:7-alpine
+
+  max_bot:
+    build:
+      context: ./apps/max_bot
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
