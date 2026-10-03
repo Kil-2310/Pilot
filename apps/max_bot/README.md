@@ -23,9 +23,14 @@ MAX-бот проекта «Пилот». Обслуживает роль ОТВ
   (`GET /pilot/settlement/`) → список пилотов в выбранном
   (`GET /pilot/?settlements__name=<...>`).
 
-Ещё не реализовано: список сопровождаемых и отчёты, обновление анкеты
-(`PATCH`) — на основе уже существующих эндпоинтов `apps/django_site`
-(`accompanied`, `report`).
+- сопровождаемые и отчёты (`bot/routers/accompanied.py`): `/reports` →
+  список сопровождаемых (`GET /accompanied/persons-detail/<max_user_id>/`)
+  → выбор дня (сегодня/вчера) → текст отчёта и ссылки на фото/видео
+  (`GET /report/accompanied-detail/<id>/<date>/`). Относительные пути
+  фото/видео из API достраиваются до абсолютных URL
+  (`DjangoAPIClient.to_absolute_url`).
+
+Ещё не реализовано: обновление анкеты ответственного лица (`PATCH`).
 
 **Не проверено на реальном боте.** `Contact`-вложение (номер телефона
 из кнопки `request_contact`) в коде ищется и как `attachment.vcf_info`,

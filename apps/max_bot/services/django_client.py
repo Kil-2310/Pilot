@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 import httpx
 
@@ -51,6 +52,33 @@ class DjangoAPIClient:
         )
         self._raise_for_error(response)
         return self._unwrap_list(response.json())
+
+    async def list_accompanied(self, max_user_id: int) -> list[dict]:
+        """Сопровождаемые, привязанные к ответственному лицу."""
+        response = await self._request("GET", f"/accompanied/persons-detail/{max_user_id}")
+        self._raise_for_error(response)
+        return self._unwrap_list(response.json())
+
+    async def get_report(self, accompanied_id: int, report_date: str) -> dict:
+        """Отчёт по сопровождаемому за дату (формат YYYY-MM-DD).
+
+        Если пилот не создавал отчёт в этот день, API отвечает 200 с
+        {"message": "..."} вместо отчёта — это не ошибка, вызывающий
+        код сам решает, как показать оба случая.
+        """
+        response = await self._request(
+            "GET", f"/report/accompanied-detail/{accompanied_id}/{report_date}/"
+        )
+        self._raise_for_error(response)
+        return response.json()
+
+    def to_absolute_url(self, relative_url: str) -> str:
+        """Достроить абсолютный URL для медиафайла (API отдаёт относительный путь)."""
+        if relative_url.startswith(("http://", "https://")):
+            return relative_url
+        parts = urlsplit(self._base_url)
+        origin = urlunsplit((parts.scheme, parts.netloc, "", "", ""))
+        return origin + relative_url
 
     async def _request(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
         try:
