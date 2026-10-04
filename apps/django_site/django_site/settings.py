@@ -10,9 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 import logging.config
 from os import getenv
+import sys
+from celery.schedules import crontab
 
 from django.urls import reverse_lazy
 
@@ -200,6 +203,13 @@ LOGIN_URL = reverse_lazy("authentication:login")
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# ============== Медиа ==============
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+
+# ============== Настройка локальной папки для сохранения видео ==============
+TMP_DIR = MEDIA_ROOT / "tmp"
+os.makedirs(TMP_DIR, exist_ok=True)
 
 # ============== Настройка swagger ==============
 SPECTACULAR_SETTINGS = {
@@ -250,14 +260,44 @@ if not DEBUG:
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
-else:
-    """Локальные медиа"""
-    MEDIA_ROOT = BASE_DIR / "media"
-    MEDIA_URL = "/media/"
-
 
 # ============== Тестовые данные для пользвателя ==============
 TEST_USER_DATA = {
     "username": "bob",
     "password": "pbkdf2_sha256$1500000$br0y2efZ3KGYOG1L2ceNUe$NQEr2bH0XK8WqnZSWPe1Kxi2EgQdQrR1MRu4U3sIy5U=",
+}
+
+# ==============  Настройки для размеров файлов ==============
+
+MAX_PHOTO_SIZE = 5 * 1024 * 1024
+MAX_VIDEO_SIZE = 50 * 1024 * 1024
+
+# ============== Настройки Celery ==============
+RABBITMQ_USER = getenv("RABBITMQ_USER")
+RABBITMQ_PASSWORD = getenv("RABBITMQ_PASSWORD")
+
+CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@rabbitmq:5672//"
+
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_IGNORE_RESULT = True
+CELERY_TASK_EAGER_PROPAGATES = True
+
+TESTING = "test" in sys.argv
+
+if TESTING or DEBUG:
+    """В режиме разработки задачи выполняются синхронно"""
+    CELERY_TASK_ALWAYS_EAGER = True
+else:
+    CELERY_TASK_ALWAYS_EAGER = getenv("CELERY_TASK_ALWAYS_EAGER")
+
+# ============== Настройка Celery-beat задачь ==============
+CELERY_BEAT_SCHEDULE = {
+    "remove-old-reports": {
+        "task": "report.tasks.delete_old_reports",
+        "schedule": crontab(minute=0, hour=3),
+    },
 }

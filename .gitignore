@@ -45,7 +45,7 @@ db.sqlite3-journal
 /staticfiles/
 /static/
 local_settings.py
-
+/rabbitmq_data/
 # ===== Логи =====
 logs/
 *.log
