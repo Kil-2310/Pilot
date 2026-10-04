@@ -53,7 +53,7 @@ python manage.py runserver
 
 ### API приложения и сторонние интеграции
 
-В режиме разработки, при DEBUG=True, пользователю доступена документация, с описанием API для MAX-бота. Пароли от интерфейса Grafana и Rabbitmq передаются в .env файле.
+В режиме разработки, при DEBUG=True, пользователю доступена документация, с описанием API для MAX-бота. Пароли и логины от интерфейса Grafana и Rabbitmq передаются в .env файле и доступны только через запуск в Docker Compose.
 
 1. Swagger - /api/schema/swagger
 2. Redoc - /api/schema/redoc/
