@@ -67,12 +67,9 @@ class ReportNoteVideo(models.Model):
         verbose_name = "Видео запись"
         verbose_name_plural = "Видео записи"
 
-    video = models.FileField(
-        upload_to="report_videos/%Y/%m/%d/",
-        validators=[
-            FileExtensionValidator(allowed_extensions=["mp4", "mov", "avi", "webm"])
-        ],
-    )
+    title = models.CharField(max_length=255)
+    video = models.FileField()
+    status = models.CharField(max_length=50, default="pending")
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -94,12 +91,8 @@ class ReportNotePhoto(models.Model):
         verbose_name = "Фото записи"
         verbose_name_plural = "Фотографии записей"
 
-    photo = models.FileField(
-        upload_to="report_photo/%Y/%m/%d/",
-        validators=[
-            FileExtensionValidator(allowed_extensions=["jpg", "jpeg", "png", "webp"])
-        ],
-    )
+    title = models.CharField(max_length=255)
+    photo = models.FileField(upload_to="report_videos/%Y/%m/%d/")
 
     created_at = models.DateTimeField(auto_now_add=True)
 

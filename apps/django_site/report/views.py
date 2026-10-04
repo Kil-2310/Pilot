@@ -1,3 +1,6 @@
+import uuid
+
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse
@@ -13,6 +16,8 @@ from .models import (
     ReportNoteVideo,
     ReportNotePhoto,
 )
+from .forms import ReportNoteMediaForm
+from .tasks import upload_video_to_s3
 
 
 class ReportListByAccompaniedView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -65,7 +70,7 @@ class ReportNoteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     """Создание заметки"""
 
     model = ReportNote
-    template_name = "report/report-note-create.html"
+    template_name = "report/note-create.html"
     fields = (
         "title",
         "text",
@@ -79,17 +84,44 @@ class ReportNoteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         pilot = self.request.user.profile_pilot
         return self.report.accompanied.pilots.filter(pk=pilot.pk).exists()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["media_form"] = ReportNoteMediaForm
+        return context
+
     def form_valid(self, form):
         form.instance.report = self.report
         form.instance.user = self.request.user
 
         response = super().form_valid(form)
 
-        for video in self.request.FILES.getlist("videos"):
-            ReportNoteVideo.objects.create(report_note=self.object, video=video)
+        video_file = self.request.FILES.get("video")
+        if video_file:
+            """
+            Алгоритм сохранения видео:
+            1. Видео сохраняется локально в папку TMP_DIR / tmp_name
+            2. После сохранения Celery-задача отправляет видео в S3
+            3. Видео удаляется из локальной папки
+            """
 
-        for photo in self.request.FILES.getlist("photos"):
-            ReportNotePhoto.objects.create(report_note=self.object, photo=photo)
+            tmp_name = f"{uuid.uuid4()}_{video_file.name}"
+            tmp_path = settings.TMP_DIR / tmp_name
+
+            with open(tmp_path, "wb+") as f:
+                for chunk in video_file.chunks():
+                    f.write(chunk)
+
+            video = ReportNoteVideo.objects.create(
+                report_note=self.object, title=video_file.name
+            )
+            upload_video_to_s3.delay(video.pk, str(tmp_path), video_file.name)
+
+        for i in range(1, 4):
+            photo = self.request.FILES.get(f"photo_{i}")
+            if photo:
+                ReportNotePhoto.objects.create(
+                    report_note=self.object, photo=photo, title=photo.name
+                )
 
         return response
 
