@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#650894">
+  <title>{% block title %}Пилот{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'pilot/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'pilot/forms.css' %}">
+  <script src="{% static 'pilot/interface.js' %}" defer></script>
+</head>
+<body class="page">
+<a class="skip-link" href="#content">Перейти к содержимому</a>
+{% block header %}
+<header class="header"><div class="container header-inner">
+  <a class="logo" href="{% url 'accompanied:accompanied_list' %}" aria-label="Пилот — главная"><img class="logo-image" src="{% static 'pilot/logo.png' %}" alt="Пилот" width="2172" height="724"></a>
+  <nav class="navigation" aria-label="Основная навигация">
+    {% if user.profile_pilot %}<a href="{% url 'accompanied:accompanied_list' %}">Сопровождаемые</a><a href="{% url 'pilot:pilot_detail' pk=user.profile_pilot.pk %}">Мой профиль</a>{% endif %}
+    {% if user.is_staff %}<a href="{% url 'admin:index' %}">Управление</a>{% endif %}
+  </nav>
+  {% if user.is_authenticated %}<details class="user-menu"><summary><span class="user"><span class="avatar" aria-hidden="true">{{ user.get_full_name|default:user.username|slice:':1' }}</span><span class="user-name">{{ user.get_full_name|default:user.username }}</span><span aria-hidden="true">⌄</span></span></summary><nav class="dropdown" aria-label="Меню аккаунта">{% if user.profile_pilot %}<a href="{% url 'pilot:pilot_detail' pk=user.profile_pilot.pk %}">Мой профиль</a>{% endif %}{% if user.is_staff %}<a href="{% url 'admin:index' %}">Управление</a>{% endif %}<a href="{% url 'authentication:logout' %}">Выйти</a></nav></details>{% endif %}
+</div></header>
+{% endblock %}
+<main class="container main" id="content">
+{% if messages %}{% for message in messages %}<div class="alert" role="status">{{ message }}</div>{% endfor %}{% endif %}
+{% block content %}{% endblock %}
+{% if user.is_staff %}{% if perms.pilot.view_profilepilot or perms.pilot.change_profilepilot %}
+<details class="section" id="pilot-directory" data-directory data-api="{% url 'api_pilot:pilot_list' %}" data-settlements="{% url 'api_pilot:settlement_list' %}">
+<summary class="section-heading"><h2>Найти пилота</h2><span class="caption">Дополнительно для менеджера</span></summary>
+<p class="description">Подберите пилота по населённому пункту. Назначение сопровождаемому выполняется в разделе управления.</p>
+<form class="filters" data-directory-form><label class="field-label" for="pilot-city">Населённый пункт</label><select class="field-control" id="pilot-city" name="city"><option value="">Все населённые пункты</option></select><button class="button" type="submit">Найти</button></form>
+<p class="description" data-directory-status role="status"></p><div class="grid" data-directory-results></div>
+<nav class="actions section-heading" aria-label="Страницы пилотов"><button class="button outline" type="button" data-directory-previous disabled>Назад</button><button class="button outline" type="button" data-directory-next disabled>Далее</button></nav>
+</details>
+{% endif %}{% endif %}
+{% if user.is_staff %}
+<details class="section"><summary class="section-heading"><h2>Управление проектом</h2><span class="caption">Доступные разделы</span></summary><div class="catalog">
+{% if perms.auth.view_user or perms.auth.change_user %}<a class="card" href="{% url 'admin:auth_user_changelist' %}"><h3>Пользователи</h3><p class="caption">Аккаунты, пароли, активность и разрешения</p></a>{% endif %}
+{% if perms.auth.view_group or perms.auth.change_group %}<a class="card" href="{% url 'admin:auth_group_changelist' %}"><h3>Группы и права</h3><p class="caption">Наборы разрешений пользователей</p></a>{% endif %}
+{% if perms.pilot.view_profilepilot or perms.pilot.change_profilepilot %}<a class="card" href="{% url 'admin:pilot_profilepilot_changelist' %}"><h3>Пилоты</h3><p class="caption">Профили, контакты и населённые пункты</p></a>{% endif %}
+{% if perms.pilot.view_settlement or perms.pilot.change_settlement %}<a class="card" href="{% url 'admin:pilot_settlement_changelist' %}"><h3>Населённые пункты</h3><p class="caption">География работы пилотов</p></a>{% endif %}
+{% if perms.accompanied.view_accompanied or perms.accompanied.change_accompanied %}<a class="card" href="{% url 'admin:accompanied_accompanied_changelist' %}"><h3>Сопровождаемые</h3><p class="caption">Данные, задачи и назначение пилотов</p></a>{% endif %}
+{% if perms.responsible_person.view_responsibleperson or perms.responsible_person.change_responsibleperson %}<a class="card" href="{% url 'admin:responsible_person_responsibleperson_changelist' %}"><h3>Ответственные лица</h3><p class="caption">Контакты, статус и связь с MAX</p></a>{% endif %}
+{% if perms.report.view_report or perms.report.change_report %}<a class="card" href="{% url 'admin:report_report_changelist' %}"><h3>Отчёты</h3><p class="caption">Дата, сопровождаемый и записи о визитах</p></a>{% endif %}
+{% if perms.report.view_reportnote or perms.report.change_reportnote %}<a class="card" href="{% url 'admin:report_reportnote_changelist' %}"><h3>Заметки и вложения</h3><p class="caption">Текст, автор, фотографии и видео</p></a>{% endif %}
+<a class="card" href="{% url 'admin:password_change' %}"><h3>Мой пароль</h3><p class="caption">Изменение пароля текущего аккаунта</p></a>
+</div></details>
+{% endif %}
+</main>
+<footer class="footer"><div class="container footer-inner"><span>© Пилот · Забота рядом</span>{% if user.is_staff %}<a href="{% url 'admin:index' %}">Управление проектом</a>{% endif %}</div></footer>
+</body></html>
