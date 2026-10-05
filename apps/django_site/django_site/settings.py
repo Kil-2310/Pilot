@@ -240,9 +240,8 @@ if not DEBUG:
     AWS_S3_ENDPOINT_URL = "https://s3.twcstorage.ru"
     AWS_S3_REGION_NAME = "ru-1"
     AWS_S3_FILE_OVERWRITE = False
-    AWS_DEFAULT_ACL = None
-    AWS_QUERYSTRING_AUTH = True
-    AWS_QUERYSTRING_EXPIRE = 60 * 15
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_QUERYSTRING_AUTH = False
 
     # --- Настройки хранилищ ---
     STORAGES = {

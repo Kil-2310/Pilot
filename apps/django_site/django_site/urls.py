@@ -18,12 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
 
 from django_site import settings
 
 urlpatterns = [
-    path("", RedirectView.as_view(url="/authentication/login/", permanent=False)),
     path("admin/", admin.site.urls),
     path("authentication/", include("authentication.urls")),
     path("pilot/", include("pilot.urls")),

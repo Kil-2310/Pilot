@@ -1,29 +1,23 @@
-<h1>Детали сопровождаемого</h1>
-
-{% if accompanied.preview %}
-    <img src="{{ accompanied.preview.url }}"
-         alt="Фото сопровождаемого {{ accompanied.full_name }}">
-{% endif %}
-<p>ФИО: {{ accompanied.full_name }}</p>
-<p>Дата рождения: {{ accompanied.date_birth }}</p>
-<p>Описание: {{ accompanied.description }}</p>
-<p>ФИО ответственного лица лицо: {{ accompanied.responsible_person.full_name }}</p>
-
-<h2>Список пилотов</h2>
-{% for pilot in accompanied.pilots.all %}
-    <p>Имя: {{ pilot.user.first_name }}</p>
-    <p>Фамилия: {{ pilot.user.last_name }}</p>
-    <p>Имя в MAX: {{ pilot.max_name }}</p>
-    <p>Имя в VK: {{ pilot.vk_name }}</p>
-    <p>Телефон: {{ pilot.telephone }}</p>
-    <a href="{% url 'pilot:pilot_detail' pk=pilot.pk %}">Профиль пилота</a>
-    <hr>
-{% endfor %}
-
-<a href="{% url 'responsible_person:responsible_person_detail' pk=accompanied.responsible_person.pk%}">Ответственное лицо</a>
-<br>
-<a href="{% url 'accompanied:accompanied_update' pk=accompanied.pk %}">Обновить сопровождаемого</a>
-<br>
-<a href="{% url 'accompanied:accompanied_list' %}">Назад к списку сопровождаемых</a>
-<br>
-<a href="{% url 'report:report_by_accompanied' accompanied_pk=accompanied.pk %}">Отчеты о текущем сопровождаемом</a>
+{% extends 'layout/base.html' %}{% load static %}
+{% block title %}{{ accompanied.full_name }} — Пилот{% endblock %}
+{% block content %}
+<div class="person-page">
+<nav class="breadcrumbs"><a href="{% url 'accompanied:accompanied_list' %}">Сопровождаемые</a><span>{{ accompanied.full_name }}</span></nav>
+<section class="card person-heading"><div class="person-top">
+{% if accompanied.preview %}<img class="person-cover" src="{{ accompanied.preview.url }}" alt="{{ accompanied.full_name }}">{% else %}<span class="person-cover person-initial" aria-hidden="true">{{ accompanied.full_name|slice:':1' }}</span>{% endif %}
+<div class="person-name"><h1>{{ accompanied.full_name }}</h1><p class="caption"><img class="small-icon" src="{% static 'pilot/icon-calendar.png' %}" alt=""> {{ accompanied.date_birth|date:'d.m.Y' }}</p>{% if accompanied.is_active %}<span class="pilot-status">● Активное сопровождение</span>{% endif %}</div>
+<div class="person-actions"><a class="button" href="{% url 'report:report_by_accompanied' accompanied_pk=accompanied.pk %}" title="Открыть отчёты и добавить запись о визите">Добавить запись</a><a class="button outline" href="{% url 'accompanied:accompanied_update' pk=accompanied.pk %}">Редактировать</a></div></div>
+<nav class="person-tabs" aria-label="Разделы карточки"><a href="#person-about" data-person-tab="person-about">О человеке</a><a href="#person-tasks" data-person-tab="person-tasks">Задачи</a><a href="{% url 'report:report_by_accompanied' accompanied_pk=accompanied.pk %}">Отчёты</a></nav>
+</section>
+<div class="person-columns">
+<div>
+<section class="card person-panel" id="person-about"><h2>О человеке</h2><p class="info-text">{{ accompanied.description|default:'Описание пока не добавлено.'|linebreaksbr }}</p><div class="health-box"><img src="{% static 'pilot/icon-heart.png' %}" alt=""><div><h3>Особенности здоровья</h3><p class="info-text">{{ accompanied.health_problems|default:'Не указаны.'|linebreaksbr }}</p></div></div></section>
+<section class="card person-panel" id="person-tasks"><div class="person-section-heading"><h2>Задачи пилота</h2><a href="{% url 'accompanied:accompanied_update' pk=accompanied.pk %}">Изменить</a></div><div class="info-text" data-person-tasks>{{ accompanied.tasks|default:'Задачи пока не добавлены.'|linebreaksbr }}</div><p class="hint">Выполнение отмечается в записи о визите.</p><a class="button outline" href="{% url 'report:report_by_accompanied' accompanied_pk=accompanied.pk %}">К отчётам о визитах</a></section>
+</div>
+<aside class="person-sidebar">
+<section class="card"><h2><img class="small-icon" src="{% static 'pilot/icon-people.png' %}" alt=""> Ответственное лицо</h2>
+{% if accompanied.responsible_person %}<div class="person-contact"><span class="avatar" aria-hidden="true">{{ accompanied.responsible_person.full_name|slice:':1' }}</span><div><a class="contact-name" href="{% url 'responsible_person:responsible_person_detail' pk=accompanied.responsible_person.pk %}">{{ accompanied.responsible_person.full_name }}</a><p class="caption">{{ accompanied.responsible_person.get_status_display }}</p><p class="caption">{{ accompanied.responsible_person.telephone }}</p></div>{% if accompanied.responsible_person.telephone %}<a class="call-button" href="tel:{{ accompanied.responsible_person.telephone }}" aria-label="Позвонить ответственному лицу"><img src="{% static 'pilot/icon-phone.png' %}" alt=""></a>{% endif %}</div>{% else %}<p class="description">Ответственное лицо не назначено.</p>{% endif %}</section>
+<section class="card"><h2><img class="small-icon" src="{% static 'pilot/icon-people.png' %}" alt=""> Закреплённые пилоты</h2>{% for pilot in accompanied.pilots.all %}<div class="person-contact"><span class="avatar" aria-hidden="true">{{ pilot.user.get_full_name|default:pilot.user.username|slice:':1' }}</span><div><a class="contact-name" href="{% url 'pilot:pilot_detail' pk=pilot.pk %}">{{ pilot.user.get_full_name|default:pilot.user.username }}</a><p class="caption">{{ pilot.telephone }}</p></div>{% if pilot.telephone %}<a class="call-button" href="tel:{{ pilot.telephone }}" aria-label="Позвонить пилоту {{ pilot.user.get_full_name|default:pilot.user.username }}"><img src="{% static 'pilot/icon-phone.png' %}" alt=""></a>{% endif %}</div>{% empty %}<p class="description">Пилоты не назначены.</p>{% endfor %}</section>
+<section class="card"><div class="person-section-heading"><h2>Задачи пилота</h2><a href="{% url 'accompanied:accompanied_update' pk=accompanied.pk %}">Изменить</a></div><div class="info-text" data-person-tasks>{{ accompanied.tasks|default:'Задачи пока не добавлены.'|linebreaksbr }}</div></section>
+</aside></div></div>
+{% endblock %}
