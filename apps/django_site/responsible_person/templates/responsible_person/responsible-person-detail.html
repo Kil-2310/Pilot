@@ -1,7 +1,3 @@
-<h1>Ответственное лицо</h1>
-
-<p>ФИО: {{ responsible_person.full_name }}</p>
-<p>Статус: {{ responsible_person.status }}</p>
-<p>Имя в MAX: {{ responsible_person.max_name }}</p>
-<p>Номер телефона: {{ responsible_person.telephone }}</p>
-<p>Описание: {{ responsible_person.description }}</p>
+{% extends 'layout/base.html' %}
+{% block title %}Ответственное лицо — Пилот{% endblock %}
+{% block content %}<nav class="breadcrumbs"><a href="{% url 'accompanied:accompanied_list' %}">Сопровождаемые</a><span>Ответственное лицо</span></nav><div class="heading"><h1>Ответственное лицо</h1></div><section class="card narrow"><div class="profile-header"><span class="avatar large" aria-hidden="true">{{ responsible_person.full_name|slice:':1' }}</span><h2>{{ responsible_person.full_name }}</h2></div><div class="info"><div class="info-label">Статус по отношению к сопровождаемому</div><p>{{ responsible_person.get_status_display }}</p></div><div class="info"><div class="info-label">Телефон</div><p>{{ responsible_person.telephone }}</p></div><div class="info"><div class="info-label">Имя в MAX</div><p>{{ responsible_person.max_name|default:'Не указано' }}</p></div><div class="info"><div class="info-label">Описание</div><p class="info-text">{{ responsible_person.description|default:'Не добавлено'|linebreaksbr }}</p></div></section>{% endblock %}

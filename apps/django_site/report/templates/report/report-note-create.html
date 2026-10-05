@@ -1,32 +1,23 @@
-<h1>Создание новой заметки</h1>
+{% extends 'layout/base.html' %}{% load static i18n %}
+{% block title %}Запись о визите — Пилот{% endblock %}
+{% block content %}
+<div class="visit-page">
+<nav class="breadcrumbs"><a href="{% url 'accompanied:accompanied_list' %}">Сопровождаемые</a><a href="{% url 'accompanied:accompanied_detail' pk=view.report.accompanied.pk %}">{{ view.report.accompanied.full_name }}</a><span>Новая заметка</span></nav>
+<section class="card visit-person">
+{% if view.report.accompanied.preview %}<img class="visit-photo" src="{{ view.report.accompanied.preview.url }}" alt="{{ view.report.accompanied.full_name }}">{% else %}<span class="visit-photo person-initial" aria-hidden="true">{{ view.report.accompanied.full_name|slice:':1' }}</span>{% endif %}
+<div><h2>{{ view.report.accompanied.full_name }}</h2><p class="caption"><img class="small-icon" src="{% static 'pilot/icon-calendar.png' %}" alt=""> {{ view.report.accompanied.date_birth|date:'d.m.Y' }}</p>{% if view.report.accompanied.is_active %}<span class="pilot-status">● Активное сопровождение</span>{% endif %}</div></section>
+<form class="card form visit-form" method="post" enctype="multipart/form-data" data-media-form>{% csrf_token %}
+{{ view.report.accompanied.tasks|json_script:'visit-tasks' }}
+<div class="visit-heading"><h1>Запись о визите</h1><time datetime="{{ view.report.date|date:'Y-m-d' }}">{% language 'ru' %}{{ view.report.date|date:'j E Y' }}{% endlanguage %}</time></div>
+{% include 'layout/fields.html' %}
+<div class="visit-media">
+<section class="visit-photos"><h2>Фото</h2><p class="hint">До трёх фото · JPG, JPEG, PNG · до 5 МБ каждое</p><div class="photo-slots">
+{% for field in media_form %}{% if field.name != 'video' %}<div class="field media-slot"><label class="field-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="form-error" role="alert">{{ field.errors }}</div>{% endif %}</div>{% endif %}{% endfor %}
+</div></section>
+<section class="visit-video"><h2>Видео</h2><p class="hint">MP4, AVI, MKV, WebM · до 50 МБ</p>{% for field in media_form %}{% if field.name == 'video' %}<div class="field media-slot"><label class="field-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="form-error" role="alert">{{ field.errors }}</div>{% endif %}</div>{% endif %}{% endfor %}</section>
+</div>
+<p class="hint">Видео появится в отчёте после завершения обработки.</p>
+<div class="form-footer"><button class="button wide" type="submit">Сохранить заметку</button></div>
+</form></div>
+{% endblock %}
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <h2>Видео</h2>
-    <p>
-        <label for="video_1">Видео 1</label>
-        <input type="file" name="videos" id="video_1" accept="video/mp4,video/quicktime,video/x-msvideo,video/webm">
-    </p>
-    <p>
-        <label for="video_2">Видео 2</label>
-        <input type="file" name="videos" id="video_2" accept="video/mp4,video/quicktime,video/x-msvideo,video/webm">
-    </p>
-
-    <h2>Фото</h2>
-    <p>
-        <label for="photo_1">Фото 1</label>
-        <input type="file" name="photos" id="photo_1" accept="image/jpeg,image/png,image/webp">
-    </p>
-    <p>
-        <label for="photo_2">Фото 2</label>
-        <input type="file" name="photos" id="photo_2" accept="image/jpeg,image/png,image/webp">
-    </p>
-    <p>
-        <label for="photo_3">Фото 3</label>
-        <input type="file" name="photos" id="photo_3" accept="image/jpeg,image/png,image/webp">
-    </p>
-
-    <button type="submit">Создать заметку</button>
-</form>

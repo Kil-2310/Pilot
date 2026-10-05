@@ -1,5 +1,10 @@
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Войти</button>
-</form>
+{% extends 'layout/base.html' %}{% load static %}
+{% block title %}Вход — Пилот{% endblock %}{% block header %}{% endblock %}
+{% block content %}
+<section class="login"><div class="login-content">
+<a class="logo" href="{% url 'authentication:login' %}"><img class="logo-image" src="{% static 'pilot/logo.png' %}" alt="Пилот" width="2172" height="724"></a>
+<h1>Вход в кабинет</h1><p class="description">Введите данные аккаунта, который создал менеджер проекта.</p>
+<form method="post" class="form">{% csrf_token %}{% include 'layout/fields.html' %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}<button class="button wide" type="submit">Войти</button></form>
+<div class="notice"><h3>Не получается войти?</h3><p>Обратитесь к менеджеру проекта, чтобы получить или восстановить доступ.</p></div>
+</div><div class="login-image"><h2>Люди рядом<br>делают мир теплее</h2><div class="photo care" role="img" aria-label="Волонтёр помогает пожилой женщине"></div></div></section>
+{% endblock %}

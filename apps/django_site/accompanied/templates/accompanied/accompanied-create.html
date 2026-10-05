@@ -1,9 +1,35 @@
-<h1>Создание сопровождаемого</h1>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button>Создать</button>
-</form>
-
-<a href="{% url 'accompanied:accompanied_list' %}">Назад к списку сопровождаемых</a>
+{% extends 'layout/base.html' %}{% load static %}
+{% block title %}Новый сопровождаемый — Пилот{% endblock %}
+{% block content %}
+<div class="create-page">
+<nav class="breadcrumbs"><a href="{% url 'accompanied:accompanied_list' %}">Сопровождаемые</a><span>Новый сопровождаемый</span></nav>
+<form class="card form create-form" method="post" enctype="multipart/form-data" data-create-form>{% csrf_token %}
+<div class="form-heading"><h1>Новый сопровождаемый</h1><p class="description">Заполните основную информацию о человеке.</p></div>
+{% if form.non_field_errors %}<div class="alert danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+<div class="person-grid">
+{% for field in form %}
+<div class="field field-{{ field.name }}{% if field.errors %} has-error{% endif %}">
+{% if field.name == 'preview' %}
+<label class="field-label photo-label" for="{{ field.id_for_label }}">Фото сопровождаемого</label>
+<div class="photo-box" data-person-photo><img src="{% static 'pilot/icon-camera.png' %}" alt="" class="photo-icon"><span>Фото сопровождаемого</span></div>
+{% else %}
+<label class="field-label" for="{{ field.id_for_label }}">{% if field.name == 'description' %}О человеке{% elif field.name == 'health_problems' %}Особенности здоровья{% else %}{{ field.label }}{% endif %}{% if field.field.required %} <em>*</em>{% endif %}</label>
+{% endif %}
+{{ field }}
+{% if field.name == 'preview' %}<span class="hint">JPG, PNG</span>{% endif %}
+{% if field.help_text %}<div class="hint">{{ field.help_text|safe }}</div>{% endif %}
+{% if field.errors %}<div class="form-error" role="alert">{{ field.errors }}</div>{% endif %}
+{% if field.name == 'responsible_person' %}
+<div class="contact-list" data-contact-list>
+{% for person in field.field.queryset %}
+<div class="contact-card" data-contact-id="{{ person.pk }}" hidden><span class="avatar" aria-hidden="true">{{ person.full_name|slice:':1' }}</span><div><strong>{{ person.full_name }}</strong><p>{{ person.get_status_display }} · {{ person.telephone }}</p></div></div>
+{% endfor %}
+</div>
+{% endif %}
+</div>
+{% endfor %}
+</div>
+<div class="form-footer"><button class="button" type="submit">Сохранить</button><a class="button outline" href="{% url 'accompanied:accompanied_list' %}">Отмена</a></div>
+<p class="form-note">Поля со звёздочкой обязательны для заполнения.</p>
+</form></div>
+{% endblock %}
