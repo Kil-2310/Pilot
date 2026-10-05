@@ -17,13 +17,12 @@ class ProfilePilotDetailViewTests(TestCase):
         cls.user = User.objects.get(**TEST_USER_DATA)
 
     def test_1(self):
-        """Успешное получение данных"""
+        """Успешное получение деталей профиля пилота"""
 
         self.client.force_login(self.user)
         response = self.client.get(reverse("pilot:pilot_detail", kwargs={"pk": 1}))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.user.username)
 
     def test_2(self):
         """

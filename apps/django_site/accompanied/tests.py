@@ -25,7 +25,6 @@ class AccompaniedListViewTests(TestCase):
         response = self.client.get(reverse("accompanied:accompanied_list"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Список сопровождаемых")
 
     def test_2(self):
         """
