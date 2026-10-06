@@ -1,0 +1,11 @@
+{% extends 'layout/base.html' %}
+{% block title %}Отчёты о визитах — Пилот{% endblock %}
+{% block content %}
+<nav class="breadcrumbs"><a href="{% url 'accompanied:accompanied_detail' pk=view.accompanied.pk %}">{{ view.accompanied.full_name }}</a><span>Отчёты</span></nav>
+<div class="heading"><div><h1>Отчёты о визитах</h1><p class="description">{{ view.accompanied.full_name }}</p></div></div>
+<section class="card section" data-report-search data-api="{% url 'api_report:report_detail_by_date' accompanied_id=view.accompanied.pk date='2000-01-01' %}">
+<h2>Найти отчёт по дате</h2><form class="filters section-heading" data-report-form><label class="field-label" for="report-date">Дата визита</label><input class="field-control" id="report-date" name="date" type="date" required><button class="button" type="submit">Показать отчёт</button></form><p class="description" data-report-status role="status"></p><div class="stack" data-report-results></div>
+</section>
+<div class="section-heading"><h2>Доступные отчёты</h2></div><div class="stack">
+{% for report in reports %}<article class="card report-card"><div class="date"><strong>{{ report.date|date:'d' }}</strong>{{ report.date|date:'m.Y' }}</div><div class="report-body"><h2>Отчёт за {{ report.date|date:'d.m.Y' }}</h2><p>Заметки и материалы визита</p></div><a class="button" href="{% url 'report:report_detail' pk=report.pk %}">Открыть отчёт</a></article>{% empty %}<section class="card empty"><h2>Отчётов пока нет</h2><p>Здесь появятся записи о визитах.</p></section>{% endfor %}
+</div>{% endblock %}

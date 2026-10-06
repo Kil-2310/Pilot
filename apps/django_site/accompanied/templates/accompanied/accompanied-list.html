@@ -1,0 +1,16 @@
+{% extends 'layout/base.html' %}{% load static %}
+{% block title %}Сопровождаемые — Пилот{% endblock %}
+{% block content %}
+<section class="banner"><div class="banner-content"><div class="eyebrow">Личный кабинет пилота</div><h1>Забота начинается<br>с внимания</h1><p>Помогайте людям жить спокойнее, увереннее и счастливее.</p><a class="button orange" href="{% url 'accompanied:accompanied_create' %}">Добавить сопровождаемого</a></div><div class="banner-image photo care" role="img" aria-label="Волонтёр рядом с пожилой женщиной"></div></section>
+{% if user.profile_pilot %}
+<section class="people-list" aria-label="Мои сопровождаемые">
+{% if accompanied_individuals %}<div class="filters"><label class="search"><img class="search-icon" src="{% static 'pilot/icon-search.png' %}" alt=""><input class="field-control" type="search" data-search-input placeholder="Поиск по имени" aria-label="Найти сопровождаемого"></label></div>{% endif %}
+<div class="grid people-grid">
+{% for accompanied in accompanied_individuals %}
+<article class="card person-card" data-search-item="{{ accompanied.full_name }}">
+{% if accompanied.preview %}<img class="person-image" src="{{ accompanied.preview.url }}" alt="{{ accompanied.full_name }}" loading="lazy">{% else %}<div class="person-placeholder" aria-hidden="true">{{ accompanied.full_name|slice:':1' }}</div>{% endif %}
+<div class="card-body"><h2>{{ accompanied.full_name }}</h2><p class="meta"><img class="small-icon" src="{% static 'pilot/icon-calendar.png' %}" alt=""><span>Дата рождения: {{ accompanied.date_birth|date:'d.m.Y' }}</span></p><a class="button wide" href="{% url 'accompanied:accompanied_detail' pk=accompanied.pk %}">Открыть карточку</a></div></article>
+{% empty %}<section class="card empty full-width"><h2>Сопровождаемых пока нет</h2><p>Здесь появятся люди, закреплённые за вашим аккаунтом.</p><a class="button" href="{% url 'accompanied:accompanied_create' %}">Добавить сопровождаемого</a></section>{% endfor %}
+</div><p class="notice" data-search-empty role="status" hidden>По вашему запросу никого не найдено.</p></section>
+{% else %}<section class="card empty"><h2>Профиль пилота не назначен</h2><p>Для работы с сопровождаемыми менеджер должен добавить профиль пилота к вашему аккаунту.</p>{% if user.is_staff %}<a class="button" href="{% url 'admin:index' %}">Перейти к управлению</a>{% endif %}</section>{% endif %}
+{% endblock %}

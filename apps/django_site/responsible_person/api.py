@@ -1,0 +1,45 @@
+from drf_spectacular.utils import extend_schema
+from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIView
+
+from .models import ResponsiblePerson
+from .serializers import (
+    GetResponsiblePersonSerializer,
+    UpdateResponsiblePersonSerializer,
+    CreateResponsiblePersonSerializer,
+)
+
+
+@extend_schema(
+    tags=["responsible_person"],
+    description="Получение деталей ответственного лица",
+)
+class ResponsiblePersonDetailApiView(RetrieveAPIView):
+    """Получение деталей ответственного лица"""
+
+    queryset = ResponsiblePerson.objects.get_active()
+    serializer_class = GetResponsiblePersonSerializer
+    lookup_field = "max_user_id"
+
+
+@extend_schema(
+    tags=["responsible_person"],
+    description="Создание ответственного лица",
+)
+class ResponsiblePersonCreateApiView(CreateAPIView):
+    """Создание ответственного лица"""
+
+    model = ResponsiblePerson
+    serializer_class = CreateResponsiblePersonSerializer
+
+
+@extend_schema(
+    tags=["responsible_person"],
+    description="Обновление ответственного лица",
+)
+class ResponsiblePersonUpdateApiView(UpdateAPIView):
+    """Обновление ответственного лица"""
+
+    queryset = ResponsiblePerson.objects.get_active()
+    serializer_class = UpdateResponsiblePersonSerializer
+    http_method_names = ["patch"]
+    lookup_field = "max_user_id"

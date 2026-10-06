@@ -1,0 +1,129 @@
+services:
+  nginx:
+    image: nginx:alpine
+    profiles: ["nginx"]
+    ports:
+      - "80:80"
+    volumes:
+      - /var/staticfiles/:/staticfiles/
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - django_app
+
+  django_app:
+    build:
+      context: ./apps/django_site
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+        python /apps/django_site/manage.py collectstatic --noinput &&
+        python /apps/django_site/manage.py migrate &&
+        python /apps/django_site/manage.py loaddata /apps/django_site/prod_site_data.json &&
+        gunicorn --chdir /apps/django_site --bind 0.0.0.0:8000 django_site.wsgi:application
+      "
+    ports:
+      - "8000:8000"
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+    volumes:
+      - /var/staticfiles/:/apps/django_site/staticfiles/
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+    networks:
+      default:
+        aliases:
+          - django-app
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_PORT}
+    volumes:
+      - ./db/:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_broker
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    volumes:
+      - ./rabbitmq_data/:/var/lib/rabbitmq
+    env_file:
+      - ./.env
+
+  celery:
+    build:
+      context: ./apps/django_site
+      dockerfile: ./Dockerfile
+    working_dir: /apps/django_site
+    command: celery -A django_site worker --loglevel=INFO
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+    depends_on:
+      - postgres
+      - rabbitmq
+    env_file:
+      - ./.env
+
+  celery_beat:
+    build:
+      context: ./apps/django_site
+      dockerfile: ./Dockerfile
+    working_dir: /apps/django_site
+    command: celery -A django_site beat --loglevel=INFO --schedule /tmp/celerybeat-schedule
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+    depends_on:
+      - postgres
+      - rabbitmq
+    env_file:
+      - ./.env
+
+  grafana:
+    image: grafana/grafana:9.2.15
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3000:3000"
+    depends_on:
+      - loki
+    env_file:
+      - ./.env
+
+  loki:
+    image: grafana/loki:2.8.0
+    ports:
+      - "3100:3100"
+
+  redis:
+    image: redis:7-alpine
+
+  max_bot:
+    build:
+      context: ./apps/max_bot
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      - django_app

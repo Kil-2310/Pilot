@@ -1,0 +1,34 @@
+name: CI Check
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.3'
+
+      - name: Install Python Dependencies
+        run: pip install -r $GITHUB_WORKSPACE/apps/django_site/requirements.txt
+
+      - name: Run Django App Tests
+        run: |
+          cd $GITHUB_WORKSPACE/apps/django_site/
+          python manage.py test
+
+      - name: Check Formating Code Django app
+        run: black --check $GITHUB_WORKSPACE/apps/django_site/
+
+      - name: Check Formating Code Max Bot
+        run: black --check $GITHUB_WORKSPACE/apps/max_bot/

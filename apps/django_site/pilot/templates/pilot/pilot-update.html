@@ -1,0 +1,14 @@
+{% extends 'layout/base.html' %}
+{% block title %}Редактирование профиля — Пилот{% endblock %}
+{% block content %}
+<div class="edit-page">
+<nav class="breadcrumbs"><a href="{% url 'pilot:pilot_detail' pk=pilot.pk %}">Мой профиль</a><span>Редактирование</span></nav>
+<form class="card form profile-edit" method="post">{% csrf_token %}
+<div class="form-heading"><h1>Редактирование профиля</h1><p class="description">Обновите информацию о себе. Эти данные видят координаторы проекта.</p></div>
+<div class="edit-layout">
+<div class="edit-fields">{% include 'layout/fields.html' %}</div>
+<aside class="edit-avatar"><h2>Ваш профиль</h2><div class="pilot-avatar" aria-label="Аватар: инициалы">{{ pilot.user.first_name|default:pilot.user.username|slice:':1' }}{{ pilot.user.last_name|slice:':1' }}</div><strong>{{ pilot.user.get_full_name|default:pilot.user.username }}</strong><span class="role-label">Пилот</span><p class="hint">Фото профиля пока не поддерживается.</p></aside>
+</div>
+<div class="form-footer"><button class="button" type="submit">Сохранить изменения</button><a class="button outline" href="{% url 'pilot:pilot_detail' pk=pilot.pk %}">Отмена</a></div>
+</form></div>
+{% endblock %}

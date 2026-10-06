@@ -1,0 +1,3 @@
+{% extends 'layout/base.html' %}
+{% block title %}Редактирование сопровождаемого — Пилот{% endblock %}
+{% block content %}<nav class="breadcrumbs"><a href="{% url 'accompanied:accompanied_list' %}">Сопровождаемые</a><span>Редактирование</span></nav><div class="heading"><h1>Редактирование карточки</h1></div><form class="card form narrow" method="post" enctype="multipart/form-data">{% csrf_token %}{% include 'layout/fields.html' %}<div class="form-footer"><button class="button" type="submit">Сохранить изменения</button><a class="button outline" href="{% url 'accompanied:accompanied_detail' pk=object.pk %}">Отмена</a></div></form>{% endblock %}
