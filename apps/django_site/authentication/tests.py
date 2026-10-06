@@ -59,3 +59,13 @@ class LogoutTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.post(reverse("authentication:logout"))
         self.assertEqual(response.status_code, 302)
+
+
+class TestsPrivacyPolicyTemplateView(TestCase):
+    """Тетсы на получение политики конфиденциальности приложения"""
+
+    def test_1(self):
+        """Успешное получение политики конфиденциальности"""
+
+        response = self.client.get(reverse("authentication:privacy"))
+        self.assertEqual(response.status_code, 200)

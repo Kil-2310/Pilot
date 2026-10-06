@@ -22,11 +22,7 @@ class ReportAdmin(admin.ModelAdmin):
     ]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet:
-        return (
-            super()
-            .get_queryset(request)
-            .prefetch_related("accompanied")
-        )
+        return super().get_queryset(request).prefetch_related("accompanied")
 
     @admin.display(description="Отчет для сопровождаемого")
     def get_accompanied(self, obj: Report) -> str:
@@ -54,11 +50,7 @@ class ReportNoteAdmin(admin.ModelAdmin):
     ]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet:
-        return (
-            super()
-            .get_queryset(request)
-            .prefetch_related("user")
-        )
+        return super().get_queryset(request).prefetch_related("user")
 
     @admin.display(description="Логин пилота")
     def get_user(self, obj: ReportNote) -> str:

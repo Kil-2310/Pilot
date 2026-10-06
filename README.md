@@ -85,7 +85,7 @@
 ### Запуск локального проекта
 
 ``` bash
-docker compose up -d --build 
+docker compose --profile nginx up -d --build
 ```
 
 ### Остановка проекта

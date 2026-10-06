@@ -10,14 +10,14 @@ from .models import ProfilePilot, Settlement
 class ProfilePilotAdmin(admin.ModelAdmin):
     """Модель админки для профиля пилота"""
 
-    list_display = ("get_user_username", "get_user_first_and_last_names", "telephone",)
+    list_display = (
+        "get_user_username",
+        "get_user_first_and_last_names",
+        "telephone",
+    )
 
     def get_queryset(self, request: HttpRequest) -> QuerySet:
-        return (
-            super()
-            .get_queryset(request)
-            .select_related("user")
-        )
+        return super().get_queryset(request).select_related("user")
 
     @admin.display(description="Фамилия и имя пилота")
     def get_user_first_and_last_names(self, obj: ProfilePilot) -> str:

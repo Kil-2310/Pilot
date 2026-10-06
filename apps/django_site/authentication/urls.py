@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView
 
-from .views import logout_view
+from .views import logout_view, PrivacyPolicyTemplateView
 
 app_name = "authentication"
 
@@ -15,4 +15,5 @@ urlpatterns = [
         name="login",
     ),
     path("logout/", logout_view, name="logout"),
+    path("privacy/", PrivacyPolicyTemplateView.as_view(), name="privacy"),
 ]
