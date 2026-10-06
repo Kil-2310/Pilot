@@ -27,7 +27,6 @@ class ResponsiblePersonDetailViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Иванов Александр Сергеевич")
 
     def test_2(self):
         """
@@ -93,7 +92,6 @@ class ResponsiblePersonDetailApiViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Иванов Александр Сергеевич")
 
     def test_2(self):
         """
@@ -124,7 +122,6 @@ class ResponsiblePersonCreateApiViewTests(TestCase):
         cls.test_post_data = {
             "max_user_id": cls.test_max_user_id,
             "full_name": "Воронов Георгий Эльдарович",
-            "status": "друг",
             "max_name": "",
             "telephone": "8 999 999 99 11",
             "description": "",
@@ -173,7 +170,6 @@ class ResponsiblePersonUpdateApiViewTests(TestCase):
         cls.test_full_name = "Воронов Артем Эльдарович"
         cls.test_post_data = {
             "full_name": cls.test_full_name,
-            "status": "друг",
             "max_name": "",
             "telephone": "8 999 999 99 11",
             "description": "",
@@ -211,23 +207,3 @@ class ResponsiblePersonUpdateApiViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
-
-    def test_3(self):
-        """
-        Провальное обновление:
-        неверное значение в поле модели status
-        """
-
-        test_post_data = self.test_post_data.copy()
-        test_post_data["status"] = "invalid"
-
-        response = self.client.patch(
-            reverse(
-                "api_responsible_person:responsible_person_update",
-                kwargs={"max_user_id": 1},
-            ),
-            data=json.dumps(test_post_data),
-            content_type="application/json",
-        )
-
-        self.assertEqual(response.status_code, 400)

@@ -12,11 +12,23 @@ class Accompanied(models.Model):
         verbose_name = "Профиль сопровождаемого"
         verbose_name_plural = "Профили сопровождаемых"
 
+    class Status(models.TextChoices):
+        PARENT = "родитель", "родитель"
+        GUARDIAN = "опекун", "опекун"
+        FRIEND = "друг", "друг"
+        OTHER = "другое", "другое"
+
     preview = models.ImageField(
         "Фото сопровождаемого",
         upload_to="accompanies/",
         blank=True,
         null=True,
+    )
+    status = models.CharField(
+        "Статус ответственного лица по соотношению к сопровождаемому",
+        max_length=50,
+        choices=Status.choices,
+        default=Status.OTHER,
     )
     full_name = models.CharField("ФИО", max_length=255)
     date_birth = models.DateField("Дата рождения")
@@ -39,6 +51,7 @@ class Accompanied(models.Model):
         verbose_name="Ответственное лицо",
         on_delete=models.SET_NULL,
         null=True,
+        related_name="accompanied_individuals",
     )
 
     objects = AccompaniedManager()

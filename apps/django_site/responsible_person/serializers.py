@@ -11,7 +11,6 @@ class BaseResponsiblePersonSerializer(serializers.ModelSerializer):
             "id",
             "max_user_id",
             "full_name",
-            "status",
             "max_name",
             "telephone",
             "description",
@@ -29,7 +28,7 @@ class UpdateResponsiblePersonSerializer(BaseResponsiblePersonSerializer):
     """Обновление ответственных лиц"""
 
     class Meta(BaseResponsiblePersonSerializer.Meta):
-        fields = ("full_name", "status", "max_name", "telephone", "description")
+        fields = ("full_name", "max_name", "telephone", "description")
 
 
 class CreateResponsiblePersonSerializer(BaseResponsiblePersonSerializer):

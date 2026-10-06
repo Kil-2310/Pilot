@@ -17,7 +17,7 @@ services:
       sh -c "
         python /apps/django_site/manage.py collectstatic --noinput &&
         python /apps/django_site/manage.py migrate &&
-        python /apps/django_site/manage.py loaddata /apps/django_site/site_data.json &&
+        python /apps/django_site/manage.py loaddata /apps/django_site/prod_site_data.json &&
         gunicorn --chdir /apps/django_site --bind 0.0.0.0:8000 django_site.wsgi:application
       "
     ports:

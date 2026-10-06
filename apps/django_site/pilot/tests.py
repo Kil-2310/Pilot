@@ -50,7 +50,7 @@ class ProfilePilotUpdateViewTests(TestCase):
             "description": "Новое описание",
             "vk_name": cls.new_vk_name,
             "max_name": "",
-            "telephone": "8 999 999 99 99",
+            "telephone": "8 999 919 99 19",
         }
 
     def test_1(self):
@@ -72,12 +72,12 @@ class ProfilePilotUpdateViewTests(TestCase):
             username="test_user",
             password="123",
         )
-        ProfilePilot.objects.create(user=new_user, telephone="8 999 999 99 91")
+        ProfilePilot.objects.create(user=new_user, telephone="8 999 999 99 21")
 
         self.client.force_login(new_user)
 
         response = self.client.post(
-            reverse("pilot:pilot_update", kwargs={"pk": 1}), data=self.test_post_data
+            reverse("pilot:pilot_update", kwargs={"pk": 2}), data=self.test_post_data
         )
 
         self.assertEqual(response.status_code, 403)

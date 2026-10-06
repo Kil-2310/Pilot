@@ -265,7 +265,7 @@ if not DEBUG:
 # ============== Тестовые данные для пользвателя ==============
 TEST_USER_DATA = {
     "username": "bob",
-    "password": "pbkdf2_sha256$1500000$br0y2efZ3KGYOG1L2ceNUe$NQEr2bH0XK8WqnZSWPe1Kxi2EgQdQrR1MRu4U3sIy5U=",
+    "password": "pbkdf2_sha256$1500000$J3jZazSLjsck3Pops2gEQ2$OYiDmGMi7o7/SgW2I1i5LuucQeURKqTvBcTFTgo0CqA=",
 }
 
 # ==============  Настройки для размеров файлов ==============
