@@ -45,8 +45,7 @@ ALLOWED_HOSTS = [
 
 
 if not DEBUG:
-    """Настройка для аутентификации, применяющаяся при развертывании на сервере"""
-    # CSRF_TRUSTED_ORIGINS = getenv("DJANGO_DOMAIN", "").split(",")
+    CSRF_TRUSTED_ORIGINS = getenv("DJANGO_DOMAIN_WITH_HTTP_PROTOCOL", "").split(",")
 
 
 # Application definition

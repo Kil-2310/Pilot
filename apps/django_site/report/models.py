@@ -92,7 +92,7 @@ class ReportNotePhoto(models.Model):
         verbose_name_plural = "Фотографии заметки отчета"
 
     title = models.CharField(max_length=255)
-    photo = models.FileField(upload_to="report_videos/%Y/%m/%d/")
+    photo = models.FileField(upload_to="report_photo/%Y/%m/%d/")
 
     created_at = models.DateTimeField(auto_now_add=True)
 
