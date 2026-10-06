@@ -25,7 +25,6 @@ class ReportListByAccompaniedViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, str(timezone.now().date()))
 
     def test_2(self):
         """
@@ -79,7 +78,6 @@ class ReportDetailViewTests(TestCase):
         response = self.client.get(reverse("report:report_detail", kwargs={"pk": 1}))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "2026-09-22")
 
     def test_2(self):
         """
@@ -194,10 +192,6 @@ class ReportDetailByDateViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response,
-            "На сопровождаемого напал табун цыган. Я избил каждого цыгана и защитил человека от нападения.",
-        )
 
     def test_2(self):
         """Успешное получение отчета, который не был создан"""

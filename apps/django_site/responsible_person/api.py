@@ -16,7 +16,7 @@ from .serializers import (
 class ResponsiblePersonDetailApiView(RetrieveAPIView):
     """Получение деталей ответственного лица"""
 
-    queryset = ResponsiblePerson.objects.get_only().get_active()
+    queryset = ResponsiblePerson.objects.get_active()
     serializer_class = GetResponsiblePersonSerializer
     lookup_field = "max_user_id"
 
@@ -39,7 +39,7 @@ class ResponsiblePersonCreateApiView(CreateAPIView):
 class ResponsiblePersonUpdateApiView(UpdateAPIView):
     """Обновление ответственного лица"""
 
-    queryset = ResponsiblePerson.objects.get_only().get_active()
+    queryset = ResponsiblePerson.objects.get_active()
     serializer_class = UpdateResponsiblePersonSerializer
     http_method_names = ["patch"]
     lookup_field = "max_user_id"

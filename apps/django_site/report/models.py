@@ -64,8 +64,8 @@ class ReportNoteVideo(models.Model):
     """Модель для видео в отчете"""
 
     class Meta:
-        verbose_name = "Видео запись"
-        verbose_name_plural = "Видео записи"
+        verbose_name = "Видео запись заметки отчета"
+        verbose_name_plural = "Видео записи заметки отчета"
 
     title = models.CharField(max_length=255)
     video = models.FileField()
@@ -88,8 +88,8 @@ class ReportNotePhoto(models.Model):
     """Модель для фото в отчете"""
 
     class Meta:
-        verbose_name = "Фото записи"
-        verbose_name_plural = "Фотографии записей"
+        verbose_name = "Фото заметки отчета"
+        verbose_name_plural = "Фотографии заметки отчета"
 
     title = models.CharField(max_length=255)
     photo = models.FileField(upload_to="report_videos/%Y/%m/%d/")

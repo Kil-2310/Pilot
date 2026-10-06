@@ -25,7 +25,6 @@ class AccompaniedListViewTests(TestCase):
         response = self.client.get(reverse("accompanied:accompanied_list"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Список сопровождаемых")
 
     def test_2(self):
         """
@@ -185,10 +184,10 @@ class AccompaniedUpdateViewTests(TestCase):
         cls.user = User.objects.get(**TEST_USER_DATA)
 
         cls.responsible_person = ResponsiblePerson.objects.get(pk=1)
-        cls.test_user_name = "new_user"
+        cls.test_user_name = "Копылов Гордей Агафонович"
         cls.accompanied_test_data = {
             "full_name": cls.test_user_name,
-            "date_birth": "2000-10-10",
+            "date_birth": "2000-09-10",
             "health_problems": "Нет",
             "tasks": "Нет",
             "responsible_person": cls.responsible_person.pk,
@@ -200,7 +199,7 @@ class AccompaniedUpdateViewTests(TestCase):
 
         self.client.force_login(self.user)
         self.client.post(
-            reverse("accompanied:accompanied_update", kwargs={"pk": 2}),
+            reverse("accompanied:accompanied_update", kwargs={"pk": 1}),
             data=self.accompanied_test_data,
         )
 

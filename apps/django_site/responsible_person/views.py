@@ -8,7 +8,7 @@ from accompanied.models import Accompanied
 class ResponsiblePersonDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Получение деталей ответственных лиц"""
 
-    queryset = ResponsiblePerson.objects.get_only().get_active()
+    queryset = ResponsiblePerson.objects.get_active()
 
     template_name = "responsible_person/responsible-person-detail.html"
     context_object_name = "responsible_person"
