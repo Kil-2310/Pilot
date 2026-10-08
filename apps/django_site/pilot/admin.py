@@ -1,9 +1,28 @@
 from django.contrib import admin
 from django.db.models import QuerySet
 from django.http import HttpRequest
-from django.db.models.query import QuerySet
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import ProfilePilot, Settlement
+
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    """Перпеопределение базовой мадели админки User"""
+
+    list_display = (
+        "username",
+        "email",
+    )
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet:
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(groups__name="Pilots")
 
 
 @admin.register(ProfilePilot)
