@@ -102,7 +102,7 @@ class AccompaniedDetailViewTests(TestCase):
             reverse("accompanied:accompanied_detail", kwargs={"pk": 1})
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
 
 class AccompaniedCreateViewTests(TestCase):
@@ -275,7 +275,7 @@ class AccompaniedUpdateViewTests(TestCase):
             data=self.accompanied_test_data,
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
 
 class AccompaniedRetrieveAPIViewTests(TestCase):
