@@ -39,6 +39,14 @@ class DjangoAPIClient:
         self._raise_for_error(response)
         return response.json()
 
+    async def update_responsible_person(self, max_user_id: int, data: dict) -> dict:
+        """Частично обновить анкету ответственного лица (PATCH)."""
+        response = await self._request(
+            "PATCH", f"/responsible-person/update/{max_user_id}/", json=data
+        )
+        self._raise_for_error(response)
+        return response.json()
+
     async def list_settlements(self) -> list[dict]:
         """Список населённых пунктов, в которых работают пилоты."""
         response = await self._request("GET", "/pilot/settlement/")

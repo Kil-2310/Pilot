@@ -20,18 +20,17 @@ class SettlementPayload(CallbackPayload, prefix="pilots_settlement"):
     name: str
 
 
-@router.message_created(Command("pilots"))
-async def on_pilots_command(event: MessageCreated) -> None:
+async def show_settlements(message) -> None:
     """Показать кнопки с населёнными пунктами, где работают пилоты."""
     try:
         settlements = await get_client().list_settlements()
     except DjangoAPIError as exc:
         log.error("Ошибка Django API при получении населённых пунктов: %s", exc)
-        await event.message.answer("Сервер временно недоступен, попробуйте позже.")
+        await message.answer("Сервер временно недоступен, попробуйте позже.")
         return
 
     if not settlements:
-        await event.message.answer("Сейчас нет доступных населённых пунктов.")
+        await message.answer("Сейчас нет доступных населённых пунктов.")
         return
 
     builder = InlineKeyboardBuilder()
@@ -40,10 +39,15 @@ async def on_pilots_command(event: MessageCreated) -> None:
             CallbackButton(text=item["name"], payload=SettlementPayload(name=item["name"]).pack())
         )
 
-    await event.message.answer(
+    await message.answer(
         "В каком населённом пункте искать пилотов?",
         attachments=[builder.as_markup()],
     )
+
+
+@router.message_created(Command("pilots"))
+async def on_pilots_command(event: MessageCreated) -> None:
+    await show_settlements(event.message)
 
 
 @router.message_callback(SettlementPayload.filter())

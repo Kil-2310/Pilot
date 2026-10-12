@@ -28,38 +28,30 @@ class ReportDatePayload(CallbackPayload, prefix="acc_date"):
     date: str  # YYYY-MM-DD
 
 
-@router.message_created(Command("reports"))
-async def on_reports_command(event: MessageCreated) -> None:
+async def show_accompanied(message, max_user_id: int) -> None:
     """Показать сопровождаемых, привязанных к ответственному лицу."""
-    from_user = await event.fetch_from_user()
-    if from_user is None:
-        await event.message.answer("Не удалось определить ваш профиль MAX. Попробуйте ещё раз позже.")
-        return
-
     client = get_client()
 
     try:
-        responsible = await client.get_responsible_person(from_user.user_id)
+        responsible = await client.get_responsible_person(max_user_id)
     except DjangoAPIError as exc:
         log.error("Ошибка Django API при проверке регистрации: %s", exc)
-        await event.message.answer("Сервер временно недоступен, попробуйте позже.")
+        await message.answer("Сервер временно недоступен, попробуйте позже.")
         return
 
     if responsible is None:
-        await event.message.answer(
-            "Вы пока не зарегистрированы. Отправьте /start, чтобы зарегистрироваться."
-        )
+        await message.answer("Вы пока не зарегистрированы. Отправьте /start, чтобы зарегистрироваться.")
         return
 
     try:
-        accompanied_list = await client.list_accompanied(from_user.user_id)
+        accompanied_list = await client.list_accompanied(max_user_id)
     except DjangoAPIError as exc:
         log.error("Ошибка Django API при получении сопровождаемых: %s", exc)
-        await event.message.answer("Сервер временно недоступен, попробуйте позже.")
+        await message.answer("Сервер временно недоступен, попробуйте позже.")
         return
 
     if not accompanied_list:
-        await event.message.answer("У вас пока нет привязанных сопровождаемых.")
+        await message.answer("У вас пока нет привязанных сопровождаемых.")
         return
 
     builder = InlineKeyboardBuilder()
@@ -68,7 +60,16 @@ async def on_reports_command(event: MessageCreated) -> None:
             CallbackButton(text=item["full_name"], payload=AccompaniedPayload(id=item["id"]).pack())
         )
 
-    await event.message.answer("Выберите сопровождаемого:", attachments=[builder.as_markup()])
+    await message.answer("Выберите сопровождаемого:", attachments=[builder.as_markup()])
+
+
+@router.message_created(Command("reports"))
+async def on_reports_command(event: MessageCreated) -> None:
+    from_user = await event.fetch_from_user()
+    if from_user is None:
+        await event.message.answer("Не удалось определить ваш профиль MAX. Попробуйте ещё раз позже.")
+        return
+    await show_accompanied(event.message, from_user.user_id)
 
 
 @router.message_callback(AccompaniedPayload.filter())

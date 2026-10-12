@@ -1,12 +1,11 @@
-"""Регистрация ответственного лица: контакт → ФИО → статус → описание."""
+"""Регистрация ответственного лица: контакт → ФИО → описание."""
 import logging
 
 from maxapi import F, Router
 from maxapi.context import MemoryContext, State, StatesGroup
-from maxapi.filters.callback_payload import CallbackPayload
 from maxapi.filters.command import CommandStart
 from maxapi.filters.contact import Contact
-from maxapi.types import CallbackButton, MessageCallback, MessageCreated, RequestContactButton
+from maxapi.types import MessageCreated, RequestContactButton
 from maxapi.utils.inline_keyboard import InlineKeyboardBuilder
 from maxapi.utils.vcf import parse_vcf_info
 
@@ -16,27 +15,12 @@ log = logging.getLogger(__name__)
 
 router = Router()
 
-# Статусы ответственного лица — соответствуют ResponsiblePerson.Status в Django.
-STATUS_LABELS = (
-    ("родитель", "Родитель"),
-    ("опекун", "Опекун"),
-    ("друг", "Друг"),
-    ("другое", "Другое"),
-)
-
 
 class Registration(StatesGroup):
     """Шаги диалога регистрации."""
 
     full_name = State()
-    status = State()
     description = State()
-
-
-class StatusPayload(CallbackPayload, prefix="reg_status"):
-    """Payload кнопки выбора статуса на шаге регистрации."""
-
-    code: str
 
 
 def _vcf_text(attachment: object) -> str | None:
@@ -69,7 +53,10 @@ async def on_start(event: MessageCreated, context: MemoryContext) -> None:
         return
 
     if existing is not None:
-        await event.message.answer(f"Здравствуйте, {existing['full_name']}! Вы уже зарегистрированы.")
+        await event.message.answer(
+            f"Здравствуйте, {existing['full_name']}! Вы уже зарегистрированы.\n"
+            "Команды: /profile, /pilots, /reports"
+        )
         return
 
     builder = InlineKeyboardBuilder()
@@ -113,34 +100,16 @@ async def on_contact_received(event: MessageCreated, context: MemoryContext) -> 
 
 @router.message_created(F.message.body.text, Registration.full_name)
 async def on_full_name(event: MessageCreated, context: MemoryContext) -> None:
-    """Сохранить ФИО и перейти к выбору статуса."""
+    """Сохранить ФИО и перейти к шагу «описание»."""
     full_name = event.message.body.text.strip()
     if not full_name:
         await event.message.answer("ФИО не может быть пустым. Введите, пожалуйста, ещё раз:")
         return
 
     await context.update_data(full_name=full_name)
-    await context.set_state(Registration.status)
-
-    builder = InlineKeyboardBuilder()
-    for code, label in STATUS_LABELS:
-        builder.row(CallbackButton(text=label, payload=StatusPayload(code=code).pack()))
-
-    await event.message.answer(
-        "Кто вы по отношению к сопровождаемому?",
-        attachments=[builder.as_markup()],
-    )
-
-
-@router.message_callback(StatusPayload.filter())
-async def on_status_chosen(
-    event: MessageCallback, payload: StatusPayload, context: MemoryContext
-) -> None:
-    """Сохранить выбранный статус и перейти к шагу «описание»."""
-    await context.update_data(status=payload.code)
     await context.set_state(Registration.description)
-    await event.answer(
-        new_text="Статус сохранён. Коротко расскажите о себе — или отправьте «-», чтобы пропустить:"
+    await event.message.answer(
+        "Коротко расскажите о себе — или отправьте «-», чтобы пропустить:"
     )
 
 
@@ -153,7 +122,6 @@ async def on_description(event: MessageCreated, context: MemoryContext) -> None:
     data = await context.get_data()
     request_payload = {
         "full_name": data["full_name"],
-        "status": data["status"],
         "max_name": data["max_name"],
         "max_user_id": data["max_user_id"],
         "telephone": data["phone"],
@@ -175,4 +143,6 @@ async def on_description(event: MessageCreated, context: MemoryContext) -> None:
         return
 
     await context.clear()
-    await event.message.answer("Регистрация завершена, спасибо!")
+    await event.message.answer(
+        "Регистрация завершена, спасибо!\nКоманды: /profile, /pilots, /reports"
+    )
