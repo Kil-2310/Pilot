@@ -80,7 +80,7 @@ class ProfilePilotUpdateViewTests(TestCase):
             reverse("pilot:pilot_update", kwargs={"pk": 2}), data=self.test_post_data
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
 
 class ProfilePilotListAPIViewTests(TestCase):

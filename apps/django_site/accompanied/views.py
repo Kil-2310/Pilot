@@ -1,8 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 from django.urls import reverse_lazy, reverse
+from django.db.models import Prefetch
 
 from .models import Accompanied
+from pilot.models import ProfilePilot
+from responsible_person.models import ResponsiblePerson
 
 
 class AccompaniedListView(LoginRequiredMixin, ListView):
@@ -20,35 +23,26 @@ class AccompaniedListView(LoginRequiredMixin, ListView):
         )
 
 
-class AccompaniedDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class AccompaniedDetailView(LoginRequiredMixin, DetailView):
     """Получение деталей сопровождаемого, привязанного к данному пилоту"""
 
+    model = Accompanied
     template_name = "accompanied/accompanied-detail.html"
     context_object_name = "accompanied"
 
-    def test_func(self):
-        pilot = self.request.user.profile_pilot
-        return self.get_object().pilots.filter(pk=pilot.pk).exists()
-
     def get_queryset(self):
+        pilot = self.request.user.profile_pilot
         return (
             Accompanied.objects.get_active()
-            .only(
-                "preview",
-                "full_name",
-                "date_birth",
-                "description",
-                "health_problems",
-                "tasks",
-                "responsible_person__full_name",
+            .get_by_pilot(pilot)
+            .select_related("responsible_person")
+            .prefetch_related(
+                Prefetch("pilots", queryset=(ProfilePilot.objects.select_related("user")))
             )
-            .prefetch_related("pilots")
         )
 
 
 class AccompaniedCreateView(LoginRequiredMixin, CreateView):
-    """Создание нового сопровождаемого"""
-
     model = Accompanied
     fields = (
         "preview",
@@ -59,9 +53,13 @@ class AccompaniedCreateView(LoginRequiredMixin, CreateView):
         "tasks",
         "responsible_person",
     )
-
     template_name = "accompanied/accompanied-create.html"
     success_url = reverse_lazy("accompanied:accompanied_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["responsible_person"] = ResponsiblePerson.objects.all()
+        return context
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -70,7 +68,7 @@ class AccompaniedCreateView(LoginRequiredMixin, CreateView):
         return response
 
 
-class AccompaniedUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class AccompaniedUpdateView(LoginRequiredMixin, UpdateView):
     """Обновление сопровождаемого"""
 
     model = Accompanied
@@ -83,12 +81,13 @@ class AccompaniedUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         "tasks",
         "responsible_person",
     )
-
-    def test_func(self):
-        pilot = self.request.user.profile_pilot
-        return self.get_object().pilots.filter(pk=pilot.pk).exists()
-
     template_name = "accompanied/accompanied-update.html"
 
     def get_success_url(self):
         return reverse("accompanied:accompanied_detail", kwargs={"pk": self.object.pk})
+
+    def get_queryset(self):
+        pilot = self.request.user.profile_pilot
+        return Accompanied.objects.select_related("responsible_person").filter(
+            pilots=pilot
+        )
