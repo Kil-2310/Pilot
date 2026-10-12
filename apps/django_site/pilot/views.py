@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, UpdateView
 from django.urls import reverse
 
@@ -8,13 +8,15 @@ from .models import ProfilePilot
 class ProfilePilotDetailView(LoginRequiredMixin, DetailView):
     """Детали профиля пилота"""
 
-    queryset = ProfilePilot.objects.get_active().get_only_fields().get_with_user()
+    queryset = ProfilePilot.objects.prefetch_related(
+        "accompanied", "settlements"
+    ).select_related("user")
 
     template_name = "pilot/pilot-detail.html"
     context_object_name = "pilot"
 
 
-class ProfilePilotUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class ProfilePilotUpdateView(LoginRequiredMixin, UpdateView):
     """Обновление профиля пилота"""
 
     model = ProfilePilot
@@ -22,8 +24,9 @@ class ProfilePilotUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
     template_name = "pilot/pilot-update.html"
     context_object_name = "pilot"
 
-    def test_func(self):
-        return self.get_object().user == self.request.user
+    def get_queryset(self):
+        user = self.request.user
+        return ProfilePilot.objects.filter(user=user).select_related("user")
 
     def get_success_url(self):
         return reverse("pilot:pilot_detail", kwargs={"pk": self.object.pk})
