@@ -6,6 +6,7 @@ from maxapi.context import MemoryContext
 
 from bot.routers.accompanied import router as accompanied_router
 from bot.routers.common import router as common_router
+from bot.routers.fallback import router as fallback_router
 from bot.routers.pilots import router as pilots_router
 from bot.routers.profile import router as profile_router
 from bot.routers.registration import router as registration_router
@@ -43,6 +44,7 @@ def build_dispatcher(settings: Settings) -> tuple[Bot, Dispatcher]:
         profile_router,
         pilots_router,
         accompanied_router,
+        fallback_router,  # всегда последним
     )
 
     return bot, dp
