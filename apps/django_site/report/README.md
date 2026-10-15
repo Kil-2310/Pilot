@@ -15,3 +15,5 @@
     
     | URL | ApiView | Метод | Описание |
     /accompanied-detail/<accompanied_id>/<date>/ | ReportDetailByDateView | GET | Получение отчета по дате и id сопровождаемого
+
+петя лох
