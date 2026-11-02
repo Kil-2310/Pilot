@@ -20,10 +20,9 @@
 <div class="pilot-fact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2"/></svg><div><h2>Населённые пункты</h2><p>{% for settlement in pilot.settlements.all %}{{ settlement.name }}{% if not forloop.last %}, {% endif %}{% empty %}Пока не указаны{% endfor %}</p></div></div>
 <div class="pilot-fact"><img src="{% static 'pilot/icon-calendar.png' %}" alt=""><div><h2>Участие в проекте</h2><p>С {{ pilot.created_at|date:'d.m.Y' }}</p><span class="caption">Дата создания профиля</span></div></div>
 </div>
-{% if pilot.user == request.user %}
 <div class="pilot-section"><h2>Мои сопровождаемые</h2><a href="{% url 'accompanied:accompanied_list' %}">Все сопровождаемые <span aria-hidden="true">→</span></a></div>
 <div class="pilot-people">
-{% for person in pilot.accompanied.get_active|slice:':3' %}
+{% for person in pilot.accompanied.all %}
 <article class="pilot-person"><div class="person-summary">
 {% if person.preview %}<img class="person-photo" src="{{ person.preview.url }}" alt="{{ person.full_name }}" loading="lazy">{% else %}<span class="person-photo person-initial" aria-hidden="true">{{ person.full_name|slice:':1' }}</span>{% endif %}
 <div><h3>{{ person.full_name }}</h3><p class="caption">{{ person.date_birth|date:'d.m.Y' }}</p><span class="pilot-status"><span aria-hidden="true">●</span> Активное сопровождение</span></div></div>
@@ -32,6 +31,5 @@
 <div class="pilot-empty"><h3>Сопровождаемых пока нет</h3><p>Здесь появятся люди, закреплённые за вами.</p><a class="button outline" href="{% url 'accompanied:accompanied_create' %}">Добавить сопровождаемого</a></div>
 {% endfor %}
 </div>
-{% endif %}
 </section>
 {% endblock %}

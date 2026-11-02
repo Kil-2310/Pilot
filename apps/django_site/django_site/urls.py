@@ -23,13 +23,15 @@ from django.views.generic import RedirectView
 from django_site import settings
 
 urlpatterns = [
-    path("", RedirectView.as_view(url="/authentication/login/", permanent=False)),
     path("admin/", admin.site.urls),
+    # Приложения под View
+    path("", RedirectView.as_view(url="/authentication/login/", permanent=False)),
     path("authentication/", include("authentication.urls")),
     path("pilot/", include("pilot.urls")),
     path("responsible-person/", include("responsible_person.urls")),
     path("accompanied/", include("accompanied.urls")),
     path("report/", include("report.urls")),
+    # Приложения под API
     path("api/responsible-person/", include("responsible_person.api_urls")),
     path("api/pilot/", include("pilot.api_urls")),
     path("api/accompanied/", include("accompanied.api_urls")),
@@ -43,8 +45,8 @@ if settings.DEBUG:
         SpectacularSwaggerView,
     )
 
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns.extend(static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
+    urlpatterns.extend(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
 
     schemas = [
         path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
@@ -60,3 +62,5 @@ if settings.DEBUG:
         ),
     ]
     urlpatterns.extend(schemas)
+
+    urlpatterns.append(path("__debug__/", include("debug_toolbar.urls")))

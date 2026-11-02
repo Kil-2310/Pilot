@@ -20,19 +20,18 @@ from .forms import ReportNoteMediaForm
 from .tasks import upload_video_to_s3
 
 
-class ReportListByAccompaniedView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    """Создание ежедневного отчета и получение списка из последних 3 отчетов"""
+class ReportListByAccompaniedView(LoginRequiredMixin, ListView):
+    """Получение списка из последних 3 отчетов"""
 
     template_name = "report/report-list.html"
     context_object_name = "reports"
 
     @cached_property
     def accompanied(self):
-        return get_object_or_404(Accompanied, pk=self.kwargs["accompanied_pk"])
-
-    def test_func(self):
         pilot = self.request.user.profile_pilot
-        return self.accompanied.pilots.filter(pk=pilot.pk).exists()
+        return get_object_or_404(
+            Accompanied, pk=self.kwargs["accompanied_pk"], pilots=pilot
+        )
 
     def get_queryset(self):
         Report.objects.get_or_create(
@@ -47,18 +46,15 @@ class ReportListByAccompaniedView(LoginRequiredMixin, UserPassesTestMixin, ListV
         )[:3]
 
 
-class ReportDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class ReportDetailView(LoginRequiredMixin, DetailView):
     """Получение деталей отчета"""
 
     template_name = "report/report-detail.html"
     context_object_name = "report"
 
-    def test_func(self):
-        pilot = self.request.user.profile_pilot
-        return self.get_object().accompanied.pilots.filter(pk=pilot.pk).exists()
-
     def get_queryset(self):
-        return get_full_report()
+        pilot = self.request.user.profile_pilot
+        return get_full_report().filter(accompanied__pilots=pilot)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

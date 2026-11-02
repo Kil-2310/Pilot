@@ -60,7 +60,7 @@ class ResponsiblePersonDetailViewTests(TestCase):
             reverse("responsible_person:responsible_person_detail", kwargs={"pk": 1})
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
     def test_4(self):
         """

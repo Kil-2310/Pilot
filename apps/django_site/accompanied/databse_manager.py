@@ -1,13 +1,15 @@
 from django.db import models
 
+from pilot.models import ProfilePilot
+
 
 class AccompaniedQuerySet(models.QuerySet):
     def get_active(self):
         """Получение активных сопровождаемых"""
         return self.filter(is_active=True)
 
-    def get_by_pilot(self, pilot: "ProfilePilot"):
-        """Получение сопровождаемых, к которым текущий пользователь (пилот) имеет доступ"""
+    def get_by_pilot(self, pilot: ProfilePilot):
+        """Получение сопровождаемых, к которым пилот имеет доступ"""
         return self.filter(pilots=pilot)
 
 

@@ -44,6 +44,10 @@ ALLOWED_HOSTS = [
 ).split(",")
 
 
+if DEBUG:
+    # Внутренние IP
+    INTERNAL_IPS = ["127.0.0.1"]
+
 if not DEBUG:
     CSRF_TRUSTED_ORIGINS = getenv("DJANGO_DOMAIN_WITH_HTTP_PROTOCOL", "").split(",")
 
@@ -57,15 +61,22 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Расширения
     "rest_framework",
     "drf_spectacular",
     "django_filters",
+    # Самописные приложения
     "authentication.apps.AuthenticationConfig",
     "pilot.apps.PilotConfig",
     "responsible_person.apps.ResponsiblePersonConfig",
     "accompanied.apps.AccompaniedConfig",
     "report.apps.ReportConfig",
 ]
+
+if DEBUG:
+    # Настройка debug toolbar
+    INSTALLED_APPS.append("debug_toolbar")
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -76,6 +87,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG:
+    # Настройка debug toolbar
+    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 
 ROOT_URLCONF = "django_site.urls"
 

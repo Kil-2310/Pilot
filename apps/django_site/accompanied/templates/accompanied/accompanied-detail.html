@@ -5,7 +5,7 @@
 <nav class="breadcrumbs"><a href="{% url 'accompanied:accompanied_list' %}">Сопровождаемые</a><span>{{ accompanied.full_name }}</span></nav>
 <section class="card person-heading"><div class="person-top">
 {% if accompanied.preview %}<img class="person-cover" src="{{ accompanied.preview.url }}" alt="{{ accompanied.full_name }}">{% else %}<span class="person-cover person-initial" aria-hidden="true">{{ accompanied.full_name|slice:':1' }}</span>{% endif %}
-<div class="person-name"><h1>{{ accompanied.full_name }}</h1><p class="caption"><img class="small-icon" src="{% static 'pilot/icon-calendar.png' %}" alt=""> {{ accompanied.date_birth|date:'d.m.Y' }}</p>{% if accompanied.is_active %}<span class="pilot-status">● Активное сопровождение</span>{% endif %}</div>
+<div class="person-name"><h1>{{ accompanied.full_name }}</h1><p class="caption"><img class="small-icon" src="{% static 'pilot/icon-calendar.png' %}" alt=""> {{ accompanied.date_birth|date:'d.m.Y' }}</p><span class="pilot-status">● Активное сопровождение</span></div>
 <div class="person-actions"><a class="button" href="{% url 'report:report_by_accompanied' accompanied_pk=accompanied.pk %}" title="Открыть отчёты и добавить запись о визите">Добавить запись</a><a class="button outline" href="{% url 'accompanied:accompanied_update' pk=accompanied.pk %}">Редактировать</a></div></div>
 <nav class="person-tabs" aria-label="Разделы карточки"><a href="#person-about" data-person-tab="person-about">О человеке</a><a href="#person-tasks" data-person-tab="person-tasks">Задачи</a><a href="{% url 'report:report_by_accompanied' accompanied_pk=accompanied.pk %}">Отчёты</a></nav>
 </section>

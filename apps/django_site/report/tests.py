@@ -59,7 +59,7 @@ class ReportListByAccompaniedViewTests(TestCase):
             reverse("report:report_by_accompanied", kwargs={"accompanied_pk": 1})
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
 
 class ReportDetailViewTests(TestCase):
@@ -108,7 +108,7 @@ class ReportDetailViewTests(TestCase):
 
         response = self.client.get(reverse("report:report_detail", kwargs={"pk": 1}))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
 
 class ReportNoteCreateViewTests(TestCase):
@@ -139,7 +139,7 @@ class ReportNoteCreateViewTests(TestCase):
 
     def test_2(self):
         """
-        Провальное получение создание заметки:
+        Провальное создание заметки:
         пилот не вошел в свой аккаунт
         """
 
@@ -152,7 +152,7 @@ class ReportNoteCreateViewTests(TestCase):
 
     def test_3(self):
         """
-        Провальное получение создание заметки:
+        Провальное создание заметки:
         пилот пытается добавить заметку к чужому отчету
         """
 

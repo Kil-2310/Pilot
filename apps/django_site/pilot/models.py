@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -24,6 +25,12 @@ class ProfilePilot(models.Model):
         verbose_name = "Профиль пилота"
         verbose_name_plural = "Профили пилотов"
 
+    preview = models.ImageField(
+        upload_to="pilots/",
+        validators=[FileExtensionValidator(["jpg", "png"])],
+        blank=True,
+        null=True,
+    )
     telephone = models.CharField("Телефон", max_length=15, unique=True)
     max_name = models.CharField("Имя в MAX", max_length=50, blank=True)
     vk_name = models.CharField("Имя в VK", max_length=50, blank=True)
